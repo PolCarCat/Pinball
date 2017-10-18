@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="40" height="40" tilewidth="32" tileheight="32" nextobjectid="1">
- <tileset firstgid="1" source="desert.tsx"/>
- <layer name="Capa de patrones 2" width="40" height="40">
-  <data encoding="base64" compression="zlib">
-   eJztmNtOwzAMhg29gDGJcZAYB7EVBmwcuvL+T4cjZrX6cdMkbUIQu/i0dUrkr24Su1sQ0SIip8yMOYscJ4St4rfMwOuv5M/k6oqZM9cZ+GgcMIdMAd4xYt0wtx7cMRPmhJkmyMUD8+jBKqLfxuL3xLx18JzIz5a/lWOOU/i9ZOj3CV4Y+4O+1775bQnzYvrhmsNrjC1O7TGv1KzBMfy0fbCB/Mn3tp/JYde5Uo2cvzVci48tf79xvqAnYp5d17mi8T6C39GOY2pqkY3CcZxwP9BvRk1/IfdqY+o4TpsX4jenpr84Zy56uHQcp82LufZSU5Le5+TkWQb6mP1ReM4J6c1C78vsD1nvdc/Y7e7T5eyUvsjUH1uN78PsD9/13vbT+jNxkho+xM+XmvTajf5j+Wk1G8F1ndIvBBc/6TmqhH41ufthb+ETx6fm4vskxtd6s4p++mFvaWPieT9Yb0N6M594Q/1CerOUfrFJ5Vdm7pdT/jBXQ/838ulHh8QJfcZ79vw3vgBjt7Q0
-  </data>
- </layer>
-</map>
