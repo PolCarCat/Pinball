@@ -24,7 +24,7 @@ bool ModuleSceneIntro::Start()
 
 	App->renderer->camera.x = App->renderer->camera.y = 0;
  
-	background = App->textures->Load("../Sprites/pinball layout.png");
+	background = App->textures->Load("../Sprites/background_mockup.png");
 	bonus_fx = App->audio->LoadFx("pinball/bonus.wav");
 
 	end_game_sensor = App->physics->CreateRectangleSensor(SCREEN_WIDTH / 2, SCREEN_HEIGHT, SCREEN_WIDTH, 50);
