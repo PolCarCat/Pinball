@@ -30,6 +30,18 @@ public:
 	Module* listener;
 };
 
+class PhysJoint {
+public:
+	PhysJoint() : joint(NULL), type(b2JointType::e_unknownJoint)
+	{}
+
+
+
+public:
+	b2Joint*		joint;
+	b2JointType		type;
+};
+
 // Module --------------------------------------
 class ModulePhysics : public Module, public b2ContactListener // TODO
 {
@@ -46,6 +58,7 @@ public:
 	PhysBody* CreateRectangle(int x, int y, int width, int height);
 	PhysBody* CreateRectangleSensor(int x, int y, int width, int height);
 	PhysBody* CreateChain(int x, int y, int* points, int size);
+	PhysBody* CreateJoint(PhysBody &bodyA, PhysBody &bodyB, b2JointType type);
 
 	// b2ContactListener ---
 	void BeginContact(b2Contact* contact);
