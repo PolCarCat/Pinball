@@ -14,6 +14,14 @@ enum KEY_STATE
 	KEY_ERROR
 };
 
+enum EVENT_WINDOW
+{
+	WE_QUIT = 0,
+	WE_HIDE = 1,
+	WE_SHOW = 2,
+	WE_COUNT
+};
+
 class ModuleInput : public Module
 {
 public:
@@ -46,8 +54,11 @@ public:
 	}
 
 private:
-	KEY_STATE* keyboard;
-	KEY_STATE mouse_buttons[MAX_MOUSE_BUTTONS];
-	int mouse_x;
-	int mouse_y;
+	bool		windowEvents[WE_COUNT];
+	KEY_STATE*	keyboard;
+	KEY_STATE	mouse_buttons[MAX_MOUSE_BUTTONS];
+	int			mouse_motion_x;
+	int			mouse_motion_y;
+	int			mouse_x;
+	int			mouse_y;
 };
