@@ -24,10 +24,15 @@ bool ModuleSceneIntro::Start()
 
 	App->renderer->camera.x = App->renderer->camera.y = 0;
  
-	background = App->textures->Load("../Sprites/background_mockup.png");
+	background = App->textures->Load("Sprites/background_mockup.png");
 	bonus_fx = App->audio->LoadFx("pinball/bonus.wav");
 
 	end_game_sensor = App->physics->CreateRectangleSensor(SCREEN_WIDTH / 2, SCREEN_HEIGHT, SCREEN_WIDTH, 50);
+
+
+	App->physics->CreateChain(0, 0, structure_chain, 120, false );
+	Bumpers.add(App->physics->CreateCircle(262/ 2, 394 / 2 , 35 / 2,false));
+
 
 	return ret;
 }
@@ -43,6 +48,8 @@ bool ModuleSceneIntro::CleanUp()
 // Update: draw background
 update_status ModuleSceneIntro::Update()
 {
+	p2List_item<PhysBody*>* c = Bumpers.getFirst();
+
 	if(App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 	{
 		ray_on = !ray_on;
@@ -52,6 +59,8 @@ update_status ModuleSceneIntro::Update()
 
 	if(App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
 	{
+	
+		App->physics->CreateCircle(ray.x, ray.y, 25, true);
 		
 	}
 
