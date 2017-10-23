@@ -13,6 +13,13 @@
 #define PIXEL_TO_METERS(p)  ((float) METER_PER_PIXEL * p)
 
 // Small class to return to other modules to track position and rotation of physics bodies
+enum Body_type
+{
+	BALL = 1,
+	BUMPER,
+	WALL,
+	OTHERS
+};
 class PhysBody
 {
 public:
@@ -24,10 +31,12 @@ public:
 	bool Contains(int x, int y) const;
 	int RayCast(int x1, int y1, int x2, int y2, float& normal_x, float& normal_y) const;
 
+
 public:
 	int width, height;
 	b2Body* body;
 	Module* listener;
+	Body_type body_type = OTHERS;
 };
 
 class PhysJoint {

@@ -3,6 +3,7 @@
 #include "p2List.h"
 #include "p2Point.h"
 #include "Globals.h"
+#include "Animation.h"
 
 class PhysBody;
 class PhysJoint;
@@ -25,12 +26,15 @@ public:
 	bool sensed;
 
 	SDL_Texture* background;
+	Animation Bumper;
+	SDL_Texture* Sprites;
 	uint bonus_fx;
 	p2Point<int> ray;
 	bool ray_on;
 private:
 	p2List<PhysBody*> Bumpers;
 	PhysJoint* launcher_joint;
+	PhysBody* Ball;
 
 	int structure_chain[120] = {
 	578, 1070,

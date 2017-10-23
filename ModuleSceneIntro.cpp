@@ -25,7 +25,13 @@ bool ModuleSceneIntro::Start()
 	App->renderer->camera.x = App->renderer->camera.y = 0;
  
 	background = App->textures->Load("Sprites/background_mockup.png");
-	bonus_fx = App->audio->LoadFx("pinball/bonus.wav");
+
+	Bumper.PushBack({ 405,0,60,60 });
+	Bumper.PushBack({ 341,0,60,60 });
+	Bumper.speed = 0;
+	Bumper.loop = false;
+	bonus_fx = App->audio->LoadFx("Game/pinball/bonus.wav");
+	Sprites = App->textures->Load("Sprites/Sprite sheet.png");
 
 	end_game_sensor = App->physics->CreateRectangleSensor(SCREEN_WIDTH / 2, SCREEN_HEIGHT, SCREEN_WIDTH, 50);
 
@@ -35,7 +41,12 @@ bool ModuleSceneIntro::Start()
 	PhysBody *b = App->physics->CreateRectangle(200, 650, 20, 10, true);
 	launcher_joint = App->physics->CreateJoint(a, b, e_prismaticJoint);
 	Bumpers.add(App->physics->CreateCircle(262/ 2, 394 / 2 , 35 / 2,false));
+	Ball = App->physics->CreateCircle(262/ 2, 304 / 2 , 15,true);
+	Ball->listener = this;
 
+	Bumpers.add(App->physics->CreateCircle(125*2 , 195 * 2, 30, false));
+	Bumpers.getFirst()->data->body_type = BUMPER;
+	
 
 	return ret;
 }
@@ -51,7 +62,7 @@ bool ModuleSceneIntro::CleanUp()
 // Update: draw background
 update_status ModuleSceneIntro::Update()
 {
-	p2List_item<PhysBody*>* c = Bumpers.getFirst();
+	//App->renderer->Blit(background, 0, 0);
 
 	if(App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 	{
@@ -66,6 +77,10 @@ update_status ModuleSceneIntro::Update()
 	{
 		App->physics->CreateCircle(ray.x, ray.y, 25, true);
 	}
+	iPoint bumper_pos;
+	Bumpers.getFirst()->data->GetPosition(bumper_pos.x,bumper_pos.y);
+	SDL_Rect bumper_rect = Bumper.GetCurrentFrame().rect;
+	App->renderer->Blit(Sprites, bumper_pos.x, bumper_pos.y,&bumper_rect);
 
 	if(App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
 	{
@@ -84,10 +99,16 @@ update_status ModuleSceneIntro::Update()
 	mouse.y = App->input->GetMouseY();
 	int ray_hit = ray.DistanceTo(mouse);
 
+	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
+	{
+
+		App->physics->CreateCircle(mouse.x, mouse.y, 15, true);
+
+	}
 	fVector normal(0.0f, 0.0f);
 
 	// All draw functions ------------------------------------------------------
-	App->renderer->Blit(background, 0, 0);
+	
 
 	// ray -----------------
 	if(ray_on == true)
@@ -109,7 +130,7 @@ void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 {
 	int x, y;
 
-	App->audio->PlayFx(bonus_fx);
+	
 
 	
 	if(bodyA)
@@ -122,5 +143,14 @@ void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 	{
 		bodyB->GetPosition(x, y);
 		App->renderer->DrawCircle(x, y, 50, 100, 100, 100);
+		if (bodyB->body_type == BUMPER)
+		{
+			App->audio->PlayFx(bonus_fx);
+			Bumper.speed = 1.0f;
+			b2Vec2 speed_vec = bodyA->body->GetLinearVelocity();
+			b2Vec2 Normal_vec = { bodyA->body->GetPosition().x + bodyA->width / 2 - bodyB->body->GetPosition().x + bodyB->width / 2, bodyA->body->GetPosition().y + bodyA->height / 2 - bodyB->body->GetPosition().y + bodyB->height / 2 };
+			bodyA->body->ApplyLinearImpulse({ speed_vec.x - (0.5f * Normal_vec.x ), speed_vec.y - (0.5f * Normal_vec.y) }, { 0,0 }, false);
+		}
 	}
-}
+	}
+

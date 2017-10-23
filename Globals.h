@@ -23,7 +23,7 @@ enum update_status
 // Configuration -----------
 #define SCREEN_WIDTH 649
 #define SCREEN_HEIGHT 1322
-#define SCREEN_SIZE 1.0f
+#define SCREEN_SIZE 1
 #define WIN_FULLSCREEN false
 #define WIN_RESIZABLE false
 #define WIN_BORDERLESS false
