@@ -40,7 +40,7 @@ bool ModuleSceneIntro::Start()
 	Ball = App->physics->CreateCircle(262/ 2, 304 / 2 , 15,true);
 	Ball->listener = this;
 
-	Bumpers.add(App->physics->CreateCircle(131*2 , 195 * 2, 30, false));
+	Bumpers.add(App->physics->CreateCircle(125*2 , 195 * 2, 30, false));
 	Bumpers.getFirst()->data->body_type = BUMPER;
 	
 
@@ -138,8 +138,8 @@ void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 			App->audio->PlayFx(bonus_fx);
 			Bumper.speed = 1.0f;
 			b2Vec2 speed_vec = bodyA->body->GetLinearVelocity();
-			
-			bodyA->body->ApplyLinearImpulse(-speed_vec, { 0,0 },false);
+			b2Vec2 Normal_vec = { bodyA->body->GetPosition().x + bodyA->width / 2 - bodyB->body->GetPosition().x + bodyB->width / 2, bodyA->body->GetPosition().y + bodyA->height / 2 - bodyB->body->GetPosition().y + bodyB->height / 2 };
+			bodyA->body->ApplyLinearImpulse({ speed_vec.x - (0.5f * Normal_vec.x ), speed_vec.y - (0.5f * Normal_vec.y) }, { 0,0 }, false);
 		}
 	}
 	}
