@@ -5,6 +5,7 @@
 #include "Globals.h"
 
 class PhysBody;
+class PhysJoint;
 
 class ModuleSceneIntro : public Module
 {
@@ -29,6 +30,7 @@ public:
 	bool ray_on;
 private:
 	p2List<PhysBody*> Bumpers;
+	PhysJoint* launcher_joint;
 
 	int structure_chain[120] = {
 	578, 1070,

@@ -103,10 +103,12 @@ PhysBody* ModulePhysics::CreateCircle(int x, int y, int radius, bool dyn)
 	return pbody;
 }
 
-PhysBody* ModulePhysics::CreateRectangle(int x, int y, int width, int height)
+PhysBody* ModulePhysics::CreateRectangle(int x, int y, int width, int height, bool dyn)
 {
 	b2BodyDef body;
-	body.type = b2_dynamicBody;
+	if (dyn)
+		body.type = b2_dynamicBody;
+	else body.type = b2_staticBody;
 	body.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
 
 	b2Body* b = world->CreateBody(&body);
@@ -193,13 +195,61 @@ PhysBody* ModulePhysics::CreateChain(int x, int y, int* points, int size, bool d
 }
 
 
-PhysBody* ModulePhysics::CreateJoint(PhysBody &bodyA, PhysBody &bodyB, b2JointType type) {
+PhysJoint* ModulePhysics::CreateJoint(PhysBody *bodyA, PhysBody *bodyB, b2JointType type, b2Vec2 anchor1, b2Vec2 anchor2) {
 	b2JointDef joint_def;
-	joint_def.bodyA = bodyA.body;
-	joint_def.bodyB = bodyB.body;
-	//joint_def.
+	joint_def.bodyA = bodyA->body;
+	joint_def.bodyB = bodyB->body;
+	joint_def.type = type;
+	joint_def.userData = this;
+	joint_def.collideConnected = true;
 
-	return nullptr;
+	PhysJoint* joint = new PhysJoint();
+
+	joint->body1 = bodyA;
+	joint->body2 = bodyB;
+	joint->type = type;
+
+	b2Joint* _joint = nullptr;
+
+	b2RevoluteJointDef rev_joint_def;
+	b2RopeJointDef rope_joint_def;
+	b2PrismaticJointDef prism_joint_def;
+
+	switch (type) {
+	case e_revoluteJoint:
+		rev_joint_def = *((b2RevoluteJointDef*)&joint_def);
+		rev_joint_def.motorSpeed = 1.0f;
+		rev_joint_def.localAnchorA = anchor1;
+		rev_joint_def.localAnchorB = anchor2;
+		joint->joint = _joint = (b2RevoluteJoint*)world->CreateJoint(&rev_joint_def);
+
+		break;
+	case e_ropeJoint:
+		rope_joint_def = *((b2RopeJointDef*)&joint_def);
+		rope_joint_def.localAnchorA = anchor1;
+		rope_joint_def.localAnchorB = anchor2;
+		rope_joint_def.maxLength = 5.0f;
+		joint->joint = _joint = (b2RopeJoint*)world->CreateJoint(&rope_joint_def);
+
+		break;
+	case e_prismaticJoint:
+		prism_joint_def = *((b2PrismaticJointDef*)&joint_def);
+		prism_joint_def.Initialize(bodyA->body, bodyB->body, { 0.5f, 0.5f }, { 0.0f, 1.0f });
+		prism_joint_def.localAnchorA = anchor1;
+		prism_joint_def.localAnchorB = anchor2;
+		prism_joint_def.motorSpeed = -50.0f;
+		prism_joint_def.maxMotorForce = 500.0f;
+		prism_joint_def.enableMotor = false;
+		prism_joint_def.enableLimit = true;
+		prism_joint_def.lowerTranslation = -5.0f;
+		prism_joint_def.upperTranslation = 0.0f;
+		prism_joint_def.collideConnected = false;
+		joint->joint = _joint = (b2PrismaticJoint*)world->CreateJoint(&prism_joint_def);
+
+		break;
+	}
+	
+	return joint;
 
 }
 

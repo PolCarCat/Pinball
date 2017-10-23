@@ -31,6 +31,9 @@ bool ModuleSceneIntro::Start()
 
 
 	App->physics->CreateChain(0, 0, structure_chain, 120, false );
+	PhysBody *a = App->physics->CreateRectangle(200, 600, 1, 1);
+	PhysBody *b = App->physics->CreateRectangle(200, 650, 20, 10, true);
+	launcher_joint = App->physics->CreateJoint(a, b, e_prismaticJoint);
 	Bumpers.add(App->physics->CreateCircle(262/ 2, 394 / 2 , 35 / 2,false));
 
 
@@ -52,16 +55,16 @@ update_status ModuleSceneIntro::Update()
 
 	if(App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 	{
-		ray_on = !ray_on;
+		/*ray_on = !ray_on;
 		ray.x = App->input->GetMouseX();
-		ray.y = App->input->GetMouseY();
+		ray.y = App->input->GetMouseY();*/
+
+		((b2PrismaticJoint*)launcher_joint->joint)->EnableMotor(true);
 	}
 
 	if(App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
 	{
-	
 		App->physics->CreateCircle(ray.x, ray.y, 25, true);
-		
 	}
 
 	if(App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)

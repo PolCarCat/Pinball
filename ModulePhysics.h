@@ -32,13 +32,17 @@ public:
 
 class PhysJoint {
 public:
-	PhysJoint() : joint(NULL), type(b2JointType::e_unknownJoint)
+	PhysJoint() : joint(NULL), type(b2JointType::e_unknownJoint), body1(NULL), body2(NULL)
 	{}
 
+	PhysJoint(const PhysJoint &og) : joint(og.joint), type(og.type), body1(og.body1), body2(og.body2)
+	{}
 
 
 public:
 	b2Joint*		joint;
+	PhysBody*		body1;
+	PhysBody*		body2;
 	b2JointType		type;
 };
 
@@ -54,11 +58,11 @@ public:
 	update_status PostUpdate();
 	bool CleanUp();
 
-	PhysBody* CreateCircle(int x, int y, int radius, bool dyn);
-	PhysBody* CreateRectangle(int x, int y, int width, int height);
+	PhysBody* CreateCircle(int x, int y, int radius, bool dyn = false);
+	PhysBody* CreateRectangle(int x, int y, int width, int height, bool dyn = false);
 	PhysBody* CreateRectangleSensor(int x, int y, int width, int height);
-	PhysBody* CreateChain(int x, int y, int* points, int size, bool dyn);
-	PhysBody* CreateJoint(PhysBody &bodyA, PhysBody &bodyB, b2JointType type);
+	PhysBody* CreateChain(int x, int y, int* points, int size, bool dyn = false);
+	PhysJoint* CreateJoint(PhysBody *bodyA, PhysBody *bodyB, b2JointType type, b2Vec2 anchor1 = { 0.5f,0.5f }, b2Vec2 anchor2 = { 0.5f,0.5f });
 
 	// b2ContactListener ---
 	void BeginContact(b2Contact* contact);
