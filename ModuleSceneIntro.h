@@ -36,7 +36,7 @@ public:
 private:
 	p2List<PhysBody*> Bumpers;
 	PhysJoint* launcher_joint;
-	PhysBody* Ball, *Chain;
+	PhysBody* Ball, *Chain, *Rare_thing_left;
 
 	int structure_chain[120] = {
 	578, 1070,
@@ -100,5 +100,19 @@ private:
 	19, 574,
 	21, 1078,
 
-		};
+	};
+	int rare_thing_left[24] = {
+		60, 713,
+		71, 709,
+		82, 712,
+		88, 717,
+		94, 698,
+		106, 684,
+		116, 677,
+		118, 663,
+		111, 650,
+		80, 614,
+		66, 614,
+		57, 623
+	};
 };

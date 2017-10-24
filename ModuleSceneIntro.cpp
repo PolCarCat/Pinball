@@ -24,7 +24,7 @@ bool ModuleSceneIntro::Start()
 
 	App->renderer->camera.x = App->renderer->camera.y = 0;
  
-	background = App->textures->Load("Sprites/background1.png");
+	background = App->textures->Load("Sprites/background.png");
 
 	Bumper.PushBack({ 405,0,60,60 });
 	Bumper.PushBack({ 341,0,60,60 });
@@ -41,12 +41,13 @@ bool ModuleSceneIntro::Start()
 
 
 	Chain = App->physics->CreateChain(0, 0, structure_chain, 120, false );
+	Rare_thing_left = App->physics->CreateChain(0, 0, rare_thing_left, 24, false);
 	PhysBody *a = App->physics->CreateRectangle(200, 600, 1, 1);
 	PhysBody *b = App->physics->CreateRectangle(200, 650, 20, 10, true);
 	launcher_joint = App->physics->CreateJoint(a, b, e_prismaticJoint, 5.0f, -10.0f, false);
 	
 	PhysBody* aux_obj = new PhysBody();
-	aux_obj = App->physics->CreateCircle(262, 394, 30, false);
+	aux_obj = App->physics->CreateCircle(262+ 35, 394 + 35, 30, false);
 	aux_obj->body_type = BUMPER;
 	aux_obj->anim = Bumper;
 	aux_obj->listener = this;
@@ -54,12 +55,25 @@ bool ModuleSceneIntro::Start()
 
 
 	aux_obj = new PhysBody();
-	aux_obj = App->physics->CreateCircle(420, 394, 30, false);
+	aux_obj = App->physics->CreateCircle(171 + 35, 496 + 35, 30, false);
 	aux_obj->body_type = BUMPER;
 	aux_obj->anim = Bumper;
 	aux_obj->listener = this;
 	Bumpers.add(aux_obj);
 
+	aux_obj = new PhysBody();
+	aux_obj = App->physics->CreateCircle(356 + 35, 496 + 35, 30, false);
+	aux_obj->body_type = BUMPER;
+	aux_obj->anim = Bumper;
+	aux_obj->listener = this;
+	Bumpers.add(aux_obj);
+
+	aux_obj = new PhysBody();
+	aux_obj = App->physics->CreateCircle(262 + 35, 582 + 35, 30, false);
+	aux_obj->body_type = BUMPER;
+	aux_obj->anim = Bumper;
+	aux_obj->listener = this;
+	Bumpers.add(aux_obj);
 
 
 	Ball = App->physics->CreateCircle(262/ 2, 304 / 2 , 15,true);
