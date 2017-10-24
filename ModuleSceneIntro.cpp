@@ -40,14 +40,24 @@ bool ModuleSceneIntro::Start()
 	PhysBody *a = App->physics->CreateRectangle(200, 600, 1, 1);
 	PhysBody *b = App->physics->CreateRectangle(200, 650, 20, 10, true);
 	launcher_joint = App->physics->CreateJoint(a, b, e_prismaticJoint, 5.0f, -10.0f, false);
+	
 	Object* aux_obj = new Object();
 	aux_obj->physbody = App->physics->CreateCircle(262, 394, 30, false);
-	Bumpers.Insert(aux_obj, 0);
+	Bumpers.add(aux_obj);
 	aux_obj->physbody = App->physics->CreateCircle(420, 394, 30, false);
-	Bumpers.Insert(aux_obj, 1);
-	for (uint i = 0; i < Bumpers.Count(); i++)
+	Bumpers.add(aux_obj);
+
+
+	p2List_item<Object*>* new_obj = Bumpers.getFirst();
+
+	for (int i = 0; i < Bumpers.count(); i++)
 	{
-		Bumpers[i]->physbody->body_type = BUMPER;
+		
+		new_obj->data->physbody->body_type = BUMPER;
+		new_obj->data->anim = Bumper;
+
+		new_obj = new_obj->next;
+
 	}
 
 	Ball = App->physics->CreateCircle(262/ 2, 304 / 2 , 15,true);
@@ -94,10 +104,18 @@ update_status ModuleSceneIntro::Update()
 		App->physics->CreateCircle(ray.x, ray.y, 25, true);
 	}
 
-	iPoint bumper_pos;
-	Bumpers[0]->physbody->GetPosition(bumper_pos.x,bumper_pos.y);
-	SDL_Rect bumper_rect = Bumper.GetCurrentFrame().rect;
-	App->renderer->Blit(Sprites, bumper_pos.x, bumper_pos.y,&bumper_rect);
+	
+	p2List_item<Object*>* new_obj = Bumpers.getFirst();
+
+	for (uint i = 0; i < Bumpers.count(); i++)
+	{
+		iPoint bumper_pos;
+		new_obj->data->physbody->GetPosition(bumper_pos.x, bumper_pos.y);
+		SDL_Rect bumper_rect = new_obj->data->anim.GetCurrentFrame().rect;
+		App->renderer->Blit(Sprites, bumper_pos.x, bumper_pos.y, &bumper_rect);
+		new_obj = new_obj->next;
+	}
+	
 
 	if(App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
 	{
@@ -147,9 +165,6 @@ void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 {
 	int x, y;
 
-	
-
-	
 	if(bodyA)
 	{
 		bodyA->GetPosition(x, y);

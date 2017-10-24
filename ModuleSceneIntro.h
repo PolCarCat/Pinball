@@ -33,7 +33,7 @@ public:
 	p2Point<int> ray;
 	bool ray_on;
 private:
-	p2DynArray<Object*> Bumpers;
+	p2List<Object*> Bumpers;
 	PhysJoint* launcher_joint;
 	PhysBody* Ball;
 
