@@ -24,7 +24,7 @@ bool ModuleSceneIntro::Start()
 
 	App->renderer->camera.x = App->renderer->camera.y = 0;
  
-	background = App->textures->Load("Sprites/background_mockup.png");
+	background = App->textures->Load("Sprites/background1.png");
 
 	Bumper.PushBack({ 405,0,60,60 });
 	Bumper.PushBack({ 341,0,60,60 });
@@ -79,7 +79,7 @@ bool ModuleSceneIntro::CleanUp()
 // Update: draw background
 update_status ModuleSceneIntro::Update()
 {
-	//App->renderer->Blit(background, 0, 0);
+	App->renderer->Blit(background, 0, 0);
 
 	if(App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 	{
@@ -98,12 +98,6 @@ update_status ModuleSceneIntro::Update()
 
 		((b2PrismaticJoint*)launcher_joint->joint)->EnableMotor(false);
 	}
-
-	if(App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
-	{
-		App->physics->CreateCircle(ray.x, ray.y, 25, true);
-	}
-
 	
 	p2List_item<Object*>* new_obj = Bumpers.getFirst();
 
