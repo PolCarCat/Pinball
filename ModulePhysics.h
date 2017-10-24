@@ -37,7 +37,7 @@ public:
 	int width, height;
 	b2Body* body;
 	Module* listener;
-	Body_type body_type = OTHERS;
+	Body_type body_type;
 };
 
 class Object

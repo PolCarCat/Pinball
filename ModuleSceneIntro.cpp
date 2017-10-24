@@ -43,24 +43,24 @@ bool ModuleSceneIntro::Start()
 	
 	Object* aux_obj = new Object();
 	aux_obj->physbody = App->physics->CreateCircle(262, 394, 30, false);
+	aux_obj->physbody->body_type = BUMPER;
+	aux_obj->anim = Bumper;
+	aux_obj->physbody->body->SetUserData(&aux_obj->anim);
+	aux_obj->physbody->listener = this;
 	Bumpers.add(aux_obj);
+	
+	aux_obj = new Object();
 	aux_obj->physbody = App->physics->CreateCircle(420, 394, 30, false);
+	aux_obj->physbody->body_type = BUMPER;
+	aux_obj->anim = Bumper;
+	aux_obj->physbody->body->SetUserData(&aux_obj->anim);
+	aux_obj->physbody->listener = this;
 	Bumpers.add(aux_obj);
 
 
-	p2List_item<Object*>* new_obj = Bumpers.getFirst();
-
-	for (int i = 0; i < Bumpers.count(); i++)
-	{
-		
-		new_obj->data->physbody->body_type = BUMPER;
-		new_obj->data->anim = Bumper;
-
-		new_obj = new_obj->next;
-
-	}
 
 	Ball = App->physics->CreateCircle(262/ 2, 304 / 2 , 15,true);
+	Ball->body_type = BALL;
 	Ball->listener = this;
 
 	
@@ -99,15 +99,15 @@ update_status ModuleSceneIntro::Update()
 		((b2PrismaticJoint*)launcher_joint->joint)->EnableMotor(false);
 	}
 	
-	p2List_item<Object*>* new_obj = Bumpers.getFirst();
+	
 
-	for (uint i = 0; i < Bumpers.count(); i++)
+	for (p2List_item<Object*>* new_obj = Bumpers.getFirst(); new_obj != NULL; new_obj = new_obj->next)
 	{
 		iPoint bumper_pos;
 		new_obj->data->physbody->GetPosition(bumper_pos.x, bumper_pos.y);
 		SDL_Rect bumper_rect = new_obj->data->anim.GetCurrentFrame().rect;
 		App->renderer->Blit(Sprites, bumper_pos.x, bumper_pos.y, &bumper_rect);
-		new_obj = new_obj->next;
+
 	}
 	
 
@@ -172,10 +172,11 @@ void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 		if (bodyB->body_type == BUMPER)
 		{
 			App->audio->PlayFx(bonus_fx);
-			Bumper.speed = 1.0f;
 			b2Vec2 speed_vec = bodyA->body->GetLinearVelocity();
 			b2Vec2 Normal_vec = { bodyA->body->GetPosition().x + bodyA->width / 2 - bodyB->body->GetPosition().x + bodyB->width / 2, bodyA->body->GetPosition().y + bodyA->height / 2 - bodyB->body->GetPosition().y + bodyB->height / 2 };
 			bodyA->body->ApplyLinearImpulse({ speed_vec.x - (0.5f * Normal_vec.x ), speed_vec.y - (0.5f * Normal_vec.y) }, { 0,0 }, false);
+			Animation* aux_anim = (Animation*) bodyB->body->GetUserData();
+			aux_anim->speed = 1.0f;
 		}
 	}
 	}
