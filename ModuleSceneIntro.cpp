@@ -30,6 +30,10 @@ bool ModuleSceneIntro::Start()
 	Bumper.PushBack({ 341,0,60,60 });
 	Bumper.speed = 0;
 	Bumper.loop = false;
+
+	Ball_anim.PushBack({ 465,0, 30,30 });
+	Ball_anim.speed = 0;
+
 	bonus_fx = App->audio->LoadFx("Game/pinball/bonus.wav");
 	Sprites = App->textures->Load("Sprites/Sprite sheet.png");
 
@@ -61,6 +65,7 @@ bool ModuleSceneIntro::Start()
 
 	Ball = App->physics->CreateCircle(262/ 2, 304 / 2 , 15,true);
 	Ball->body_type = BALL;
+	Ball->anim = Ball_anim;
 	Ball->listener = this;
 
 	
@@ -83,6 +88,9 @@ update_status ModuleSceneIntro::Update()
 	iPoint ball_pos;
 	Ball->GetPosition(ball_pos.x, ball_pos.y);
 	//App->renderer->CameraFollow(ball_pos);
+
+	App->renderer->Blit(Sprites, ball_pos.x, ball_pos.y, &Ball->anim.GetCurrentFrame().rect);
+
 
 	if(App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 	{

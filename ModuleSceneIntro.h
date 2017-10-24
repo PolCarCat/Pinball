@@ -28,6 +28,7 @@ public:
 
 	SDL_Texture* background;
 	Animation Bumper;
+	Animation Ball_anim;
 	SDL_Texture* Sprites;
 	uint bonus_fx;
 	p2Point<int> ray;
