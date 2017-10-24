@@ -36,7 +36,7 @@ bool ModuleSceneIntro::Start()
 	end_game_sensor = App->physics->CreateRectangleSensor(SCREEN_WIDTH / 2, SCREEN_HEIGHT, SCREEN_WIDTH, 50);
 
 
-	App->physics->CreateChain(0, 0, structure_chain, 120, false );
+	Chain = App->physics->CreateChain(0, 0, structure_chain, 120, false );
 	PhysBody *a = App->physics->CreateRectangle(200, 600, 1, 1);
 	PhysBody *b = App->physics->CreateRectangle(200, 650, 20, 10, true);
 	launcher_joint = App->physics->CreateJoint(a, b, e_prismaticJoint, 5.0f, -10.0f, false);
@@ -45,17 +45,17 @@ bool ModuleSceneIntro::Start()
 	aux_obj->physbody = App->physics->CreateCircle(262, 394, 30, false);
 	aux_obj->physbody->body_type = BUMPER;
 	aux_obj->anim = Bumper;
-	aux_obj->physbody->body->SetUserData(&aux_obj->anim);
 	aux_obj->physbody->listener = this;
 	Bumpers.add(aux_obj);
-	
+	delete aux_obj;
+
 	aux_obj = new Object();
 	aux_obj->physbody = App->physics->CreateCircle(420, 394, 30, false);
 	aux_obj->physbody->body_type = BUMPER;
 	aux_obj->anim = Bumper;
-	aux_obj->physbody->body->SetUserData(&aux_obj->anim);
 	aux_obj->physbody->listener = this;
 	Bumpers.add(aux_obj);
+	delete aux_obj;
 
 
 
@@ -92,10 +92,6 @@ update_status ModuleSceneIntro::Update()
 
 	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_UP)
 	{
-		/*ray_on = !ray_on;
-		ray.x = App->input->GetMouseX();
-		ray.y = App->input->GetMouseY();*/
-
 		((b2PrismaticJoint*)launcher_joint->joint)->EnableMotor(false);
 	}
 	

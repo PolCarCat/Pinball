@@ -35,7 +35,7 @@ public:
 private:
 	p2List<Object*> Bumpers;
 	PhysJoint* launcher_joint;
-	PhysBody* Ball;
+	PhysBody* Ball, *Chain;
 
 	int structure_chain[120] = {
 	578, 1070,
