@@ -2,6 +2,7 @@
 #include "Module.h"
 #include "Globals.h"
 #include "Box2D/Box2D/Box2D.h"
+#include "Animation.h"
 
 #define GRAVITY_X 0.0f
 #define GRAVITY_Y -7.0f
@@ -37,6 +38,14 @@ public:
 	b2Body* body;
 	Module* listener;
 	Body_type body_type = OTHERS;
+};
+
+class Object
+{
+public:
+	PhysBody* physbody;
+	Animation anim;
+
 };
 
 class PhysJoint {
