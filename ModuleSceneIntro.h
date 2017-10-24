@@ -7,6 +7,7 @@
 
 class PhysBody;
 class PhysJoint;
+class Object;
 
 class ModuleSceneIntro : public Module
 {

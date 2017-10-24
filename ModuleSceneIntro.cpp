@@ -40,10 +40,7 @@ bool ModuleSceneIntro::Start()
 	PhysBody *a = App->physics->CreateRectangle(200, 600, 1, 1);
 	PhysBody *b = App->physics->CreateRectangle(200, 650, 20, 10, true);
 	launcher_joint = App->physics->CreateJoint(a, b, e_prismaticJoint, 5.0f, -10.0f, false);
-	Bumpers.Insert(App->physics->CreateCircle(262, 394 , 30 ,false), 0);
-	Bumpers[0]->body_type = BUMPER;
-	launcher_joint = App->physics->CreateJoint(a, b, e_prismaticJoint);
-	Object* aux_obj;
+	Object* aux_obj = new Object();
 	aux_obj->physbody = App->physics->CreateCircle(262, 394, 30, false);
 	Bumpers.Insert(aux_obj, 0);
 	aux_obj->physbody = App->physics->CreateCircle(420, 394, 30, false);
