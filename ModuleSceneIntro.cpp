@@ -41,15 +41,12 @@ bool ModuleSceneIntro::Start()
 
 
 	Chain = App->physics->CreateChain(0, 0, structure_chain, 120, false );
-<<<<<<< HEAD
+
 	Rare_thing_left = App->physics->CreateChain(0, 0, rare_thing_left, 24, false);
 	PhysBody *a = App->physics->CreateRectangle(200, 600, 1, 1);
 	PhysBody *b = App->physics->CreateRectangle(200, 650, 20, 10, true);
-=======
 
-	PhysBody *a = App->physics->CreateRectangle(620, 30, 1, 1);
-	PhysBody *b = App->physics->CreateRectangle(620, 30, 20, 10, true);
->>>>>>> origin/master
+
 	launcher_joint = App->physics->CreateJoint(a, b, e_prismaticJoint, 5.0f, -10.0f, false);
 	
 	PhysBody* aux_obj = new PhysBody();
