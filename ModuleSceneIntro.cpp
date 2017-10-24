@@ -40,8 +40,16 @@ bool ModuleSceneIntro::Start()
 	PhysBody *a = App->physics->CreateRectangle(200, 600, 1, 1);
 	PhysBody *b = App->physics->CreateRectangle(200, 650, 20, 10, true);
 	launcher_joint = App->physics->CreateJoint(a, b, e_prismaticJoint);
-	Bumpers.Insert(App->physics->CreateCircle(262, 394 , 30 ,false), 0);
-	Bumpers[0]->body_type = BUMPER;
+	Object* aux_obj;
+	aux_obj->physbody = App->physics->CreateCircle(262, 394, 30, false);
+	Bumpers.Insert(aux_obj, 0);
+	aux_obj->physbody = App->physics->CreateCircle(420, 394, 30, false);
+	Bumpers.Insert(aux_obj, 1);
+	for (uint i = 0; i < Bumpers.Count(); i++)
+	{
+		Bumpers[i]->physbody->body_type = BUMPER;
+	}
+
 	Ball = App->physics->CreateCircle(262/ 2, 304 / 2 , 15,true);
 	Ball->listener = this;
 
@@ -76,8 +84,9 @@ update_status ModuleSceneIntro::Update()
 	{
 		App->physics->CreateCircle(ray.x, ray.y, 25, true);
 	}
+
 	iPoint bumper_pos;
-	Bumpers[0]->GetPosition(bumper_pos.x,bumper_pos.y);
+	Bumpers[0]->physbody->GetPosition(bumper_pos.x,bumper_pos.y);
 	SDL_Rect bumper_rect = Bumper.GetCurrentFrame().rect;
 	App->renderer->Blit(Sprites, bumper_pos.x, bumper_pos.y,&bumper_rect);
 
