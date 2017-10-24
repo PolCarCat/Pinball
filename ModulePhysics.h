@@ -71,7 +71,8 @@ public:
 	PhysBody* CreateRectangle(int x, int y, int width, int height, bool dyn = false);
 	PhysBody* CreateRectangleSensor(int x, int y, int width, int height);
 	PhysBody* CreateChain(int x, int y, int* points, int size, bool dyn = false);
-	PhysJoint* CreateJoint(PhysBody *bodyA, PhysBody *bodyB, b2JointType type, b2Vec2 anchor1 = { 0.5f,0.5f }, b2Vec2 anchor2 = { 0.5f,0.5f });
+	PhysJoint* CreateJoint(PhysBody *bodyA, PhysBody *bodyB, b2JointType type, float max_length, float speed = 1.0f,
+		bool collide_connected = false, b2Vec2 axis = { 0.0f, 1.0f }, b2Vec2 anchor1 = { 1.0f, 1.0f }, b2Vec2 anchor2 = { 1.0f, 1.0f });
 
 	// b2ContactListener ---
 	void BeginContact(b2Contact* contact);

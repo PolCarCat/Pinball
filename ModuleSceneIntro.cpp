@@ -39,7 +39,7 @@ bool ModuleSceneIntro::Start()
 	App->physics->CreateChain(0, 0, structure_chain, 120, false );
 	PhysBody *a = App->physics->CreateRectangle(200, 600, 1, 1);
 	PhysBody *b = App->physics->CreateRectangle(200, 650, 20, 10, true);
-	launcher_joint = App->physics->CreateJoint(a, b, e_prismaticJoint);
+	launcher_joint = App->physics->CreateJoint(a, b, e_prismaticJoint, 5.0f, -10.0f, false);
 	Bumpers.Insert(App->physics->CreateCircle(262, 394 , 30 ,false), 0);
 	Bumpers[0]->body_type = BUMPER;
 	Ball = App->physics->CreateCircle(262/ 2, 304 / 2 , 15,true);
@@ -70,6 +70,15 @@ update_status ModuleSceneIntro::Update()
 		ray.y = App->input->GetMouseY();*/
 
 		((b2PrismaticJoint*)launcher_joint->joint)->EnableMotor(true);
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_UP)
+	{
+		/*ray_on = !ray_on;
+		ray.x = App->input->GetMouseX();
+		ray.y = App->input->GetMouseY();*/
+
+		((b2PrismaticJoint*)launcher_joint->joint)->EnableMotor(false);
 	}
 
 	if(App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)

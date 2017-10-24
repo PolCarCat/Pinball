@@ -195,13 +195,15 @@ PhysBody* ModulePhysics::CreateChain(int x, int y, int* points, int size, bool d
 }
 
 
-PhysJoint* ModulePhysics::CreateJoint(PhysBody *bodyA, PhysBody *bodyB, b2JointType type, b2Vec2 anchor1, b2Vec2 anchor2) {
+PhysJoint* ModulePhysics::CreateJoint(PhysBody *bodyA, PhysBody *bodyB, b2JointType type, float max_length, float speed,
+	bool collide_connected, b2Vec2 axis, b2Vec2 anchor1, b2Vec2 anchor2)
+{
 	b2JointDef joint_def;
 	joint_def.bodyA = bodyA->body;
 	joint_def.bodyB = bodyB->body;
 	joint_def.type = type;
 	joint_def.userData = this;
-	joint_def.collideConnected = true;
+	joint_def.collideConnected = collide_connected;
 
 	PhysJoint* joint = new PhysJoint();
 
@@ -218,7 +220,8 @@ PhysJoint* ModulePhysics::CreateJoint(PhysBody *bodyA, PhysBody *bodyB, b2JointT
 	switch (type) {
 	case e_revoluteJoint:
 		rev_joint_def = *((b2RevoluteJointDef*)&joint_def);
-		rev_joint_def.motorSpeed = 1.0f;
+		rev_joint_def.Initialize(bodyA->body, bodyB->body, { 0.5f, 0.5f });
+		rev_joint_def.motorSpeed = speed;
 		rev_joint_def.localAnchorA = anchor1;
 		rev_joint_def.localAnchorB = anchor2;
 		joint->joint = _joint = (b2RevoluteJoint*)world->CreateJoint(&rev_joint_def);
@@ -228,22 +231,21 @@ PhysJoint* ModulePhysics::CreateJoint(PhysBody *bodyA, PhysBody *bodyB, b2JointT
 		rope_joint_def = *((b2RopeJointDef*)&joint_def);
 		rope_joint_def.localAnchorA = anchor1;
 		rope_joint_def.localAnchorB = anchor2;
-		rope_joint_def.maxLength = 5.0f;
+		rope_joint_def.maxLength = max_length;
 		joint->joint = _joint = (b2RopeJoint*)world->CreateJoint(&rope_joint_def);
 
 		break;
 	case e_prismaticJoint:
 		prism_joint_def = *((b2PrismaticJointDef*)&joint_def);
-		prism_joint_def.Initialize(bodyA->body, bodyB->body, { 0.5f, 0.5f }, { 0.0f, 1.0f });
+		prism_joint_def.Initialize(bodyA->body, bodyB->body, { 0.5f, 0.5f }, axis);
 		prism_joint_def.localAnchorA = anchor1;
 		prism_joint_def.localAnchorB = anchor2;
-		prism_joint_def.motorSpeed = -50.0f;
+		prism_joint_def.motorSpeed = speed;
 		prism_joint_def.maxMotorForce = 500.0f;
 		prism_joint_def.enableMotor = false;
 		prism_joint_def.enableLimit = true;
-		prism_joint_def.lowerTranslation = -5.0f;
+		prism_joint_def.lowerTranslation = max_length * (speed / abs(speed));
 		prism_joint_def.upperTranslation = 0.0f;
-		prism_joint_def.collideConnected = false;
 		joint->joint = _joint = (b2PrismaticJoint*)world->CreateJoint(&prism_joint_def);
 
 		break;
