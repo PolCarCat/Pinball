@@ -207,3 +207,8 @@ bool ModuleRender::DrawCircle(int x, int y, int radius, Uint8 r, Uint8 g, Uint8 
 
 	return ret;
 }
+
+void ModuleRender::CameraFollow(iPoint p) {
+	camera.x = /*REDUCE_TO(camera.x,*/ -p.x/*, 1)*/;
+	camera.y = /*REDUCE_TO(camera.y,*/ -p.y/*, 1)*/;
+}

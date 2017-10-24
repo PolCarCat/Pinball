@@ -41,9 +41,15 @@ bool ModuleSceneIntro::Start()
 
 
 	Chain = App->physics->CreateChain(0, 0, structure_chain, 120, false );
+<<<<<<< HEAD
 	Rare_thing_left = App->physics->CreateChain(0, 0, rare_thing_left, 24, false);
 	PhysBody *a = App->physics->CreateRectangle(200, 600, 1, 1);
 	PhysBody *b = App->physics->CreateRectangle(200, 650, 20, 10, true);
+=======
+
+	PhysBody *a = App->physics->CreateRectangle(620, 30, 1, 1);
+	PhysBody *b = App->physics->CreateRectangle(620, 30, 20, 10, true);
+>>>>>>> origin/master
 	launcher_joint = App->physics->CreateJoint(a, b, e_prismaticJoint, 5.0f, -10.0f, false);
 	
 	PhysBody* aux_obj = new PhysBody();
@@ -100,8 +106,9 @@ update_status ModuleSceneIntro::Update()
 	App->renderer->Blit(background, 0, 0);
 	iPoint ball_pos;
 	Ball->GetPosition(ball_pos.x, ball_pos.y);
-	App->renderer->Blit(Sprites, ball_pos.x, ball_pos.y, &Ball->anim.GetCurrentFrame().rect);
+	//App->renderer->CameraFollow(ball_pos);
 
+	App->renderer->Blit(Sprites, ball_pos.x, ball_pos.y, &Ball->anim.GetCurrentFrame().rect);
 
 
 	if(App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)

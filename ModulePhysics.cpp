@@ -29,6 +29,7 @@ bool ModulePhysics::Start()
 	LOG("Creating Physics 2D environment");
 
 	world = new b2World(b2Vec2(GRAVITY_X, -GRAVITY_Y));
+	//world->ShiftOrigin({500,500});
 	world->SetContactListener(this);
 
 	// needed to create joints like mouse joint
@@ -137,7 +138,6 @@ PhysBody* ModulePhysics::CreateRectangleSensor(int x, int y, int width, int heig
 	body.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
 
 	b2Body* b = world->CreateBody(&body);
-
 	b2PolygonShape box;
 	box.SetAsBox(PIXEL_TO_METERS(width) * 0.5f, PIXEL_TO_METERS(height) * 0.5f);
 
@@ -231,7 +231,7 @@ PhysJoint* ModulePhysics::CreateJoint(PhysBody *bodyA, PhysBody *bodyB, b2JointT
 		rope_joint_def = *((b2RopeJointDef*)&joint_def);
 		rope_joint_def.localAnchorA = anchor1;
 		rope_joint_def.localAnchorB = anchor2;
-		rope_joint_def.maxLength = max_length;
+		rope_joint_def.maxLength = PIXEL_TO_METERS(max_length);
 		joint->joint = _joint = (b2RopeJoint*)world->CreateJoint(&rope_joint_def);
 
 		break;
@@ -244,7 +244,7 @@ PhysJoint* ModulePhysics::CreateJoint(PhysBody *bodyA, PhysBody *bodyB, b2JointT
 		prism_joint_def.maxMotorForce = 500.0f;
 		prism_joint_def.enableMotor = false;
 		prism_joint_def.enableLimit = true;
-		prism_joint_def.lowerTranslation = max_length * (speed / abs(speed));
+		prism_joint_def.lowerTranslation = PIXEL_TO_METERS(max_length * (speed / abs(speed)));
 		prism_joint_def.upperTranslation = 0.0f;
 		joint->joint = _joint = (b2PrismaticJoint*)world->CreateJoint(&prism_joint_def);
 
