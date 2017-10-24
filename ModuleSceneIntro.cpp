@@ -41,21 +41,20 @@ bool ModuleSceneIntro::Start()
 	PhysBody *b = App->physics->CreateRectangle(200, 650, 20, 10, true);
 	launcher_joint = App->physics->CreateJoint(a, b, e_prismaticJoint, 5.0f, -10.0f, false);
 	
-	Object* aux_obj = new Object();
-	aux_obj->physbody = App->physics->CreateCircle(262, 394, 30, false);
-	aux_obj->physbody->body_type = BUMPER;
+	PhysBody* aux_obj = new PhysBody();
+	aux_obj = App->physics->CreateCircle(262, 394, 30, false);
+	aux_obj->body_type = BUMPER;
 	aux_obj->anim = Bumper;
-	aux_obj->physbody->listener = this;
+	aux_obj->listener = this;
 	Bumpers.add(aux_obj);
-	delete aux_obj;
 
-	aux_obj = new Object();
-	aux_obj->physbody = App->physics->CreateCircle(420, 394, 30, false);
-	aux_obj->physbody->body_type = BUMPER;
+
+	aux_obj = new PhysBody();
+	aux_obj = App->physics->CreateCircle(420, 394, 30, false);
+	aux_obj->body_type = BUMPER;
 	aux_obj->anim = Bumper;
-	aux_obj->physbody->listener = this;
+	aux_obj->listener = this;
 	Bumpers.add(aux_obj);
-	delete aux_obj;
 
 
 
@@ -97,10 +96,10 @@ update_status ModuleSceneIntro::Update()
 	
 	
 
-	for (p2List_item<Object*>* new_obj = Bumpers.getFirst(); new_obj != NULL; new_obj = new_obj->next)
+	for (p2List_item<PhysBody*>* new_obj = Bumpers.getFirst(); new_obj != NULL; new_obj = new_obj->next)
 	{
 		iPoint bumper_pos;
-		new_obj->data->physbody->GetPosition(bumper_pos.x, bumper_pos.y);
+		new_obj->data->GetPosition(bumper_pos.x, bumper_pos.y);
 		SDL_Rect bumper_rect = new_obj->data->anim.GetCurrentFrame().rect;
 		App->renderer->Blit(Sprites, bumper_pos.x, bumper_pos.y, &bumper_rect);
 
@@ -171,8 +170,8 @@ void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 			b2Vec2 speed_vec = bodyA->body->GetLinearVelocity();
 			b2Vec2 Normal_vec = { bodyA->body->GetPosition().x + bodyA->width / 2 - bodyB->body->GetPosition().x + bodyB->width / 2, bodyA->body->GetPosition().y + bodyA->height / 2 - bodyB->body->GetPosition().y + bodyB->height / 2 };
 			bodyA->body->ApplyLinearImpulse({ speed_vec.x - (0.5f * Normal_vec.x ), speed_vec.y - (0.5f * Normal_vec.y) }, { 0,0 }, false);
-			Animation* aux_anim = (Animation*) bodyB->body->GetUserData();
-			aux_anim->speed = 1.0f;
+			
+			bodyB->anim.speed = 1;
 		}
 	}
 	}

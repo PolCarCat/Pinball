@@ -38,15 +38,14 @@ public:
 	b2Body* body;
 	Module* listener;
 	Body_type body_type;
-};
-
-class Object
-{
-public:
-	PhysBody* physbody;
 	Animation anim;
-
 };
+
+
+
+
+
+
 
 class PhysJoint {
 public:
