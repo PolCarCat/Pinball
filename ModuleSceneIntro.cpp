@@ -43,8 +43,43 @@ bool ModuleSceneIntro::Start()
 	Chain = App->physics->CreateChain(0, 0, structure_chain, 120, false );
 
 	Rare_thing_left = App->physics->CreateChain(0, 0, rare_thing_left, 24, false);
+	Rare_thing_right = App->physics->CreateChain(0, 0, rare_thing_right, 24, false);
+	Curve_left = App->physics->CreateChain(0, 0, curve_left, 12, false);
+	Curve_right = App->physics->CreateChain(0, 0, curve_right, 16, false);
 	PhysBody *a = App->physics->CreateRectangle(200, 600, 1, 1);
 	PhysBody *b = App->physics->CreateRectangle(200, 650, 20, 10, true);
+
+	PhysBody* aux_stick = new PhysBody();
+	aux_stick = App->physics->CreateRectangle(166 + 6, 246 + 25 ,5, 50, false);
+	Sticks.add(aux_stick);
+
+	aux_stick = new PhysBody();
+	aux_stick = App->physics->CreateRectangle(230 + 4, 239 + 25, 5, 50, false);
+	Sticks.add(aux_stick);
+
+	aux_stick = new PhysBody();
+	aux_stick = App->physics->CreateRectangle(294 + 4, 238 + 25, 5, 50, false);
+	Sticks.add(aux_stick);
+
+	aux_stick = new PhysBody();
+	aux_stick = App->physics->CreateRectangle(359 + 2, 240 + 25, 5, 50, false);
+	Sticks.add(aux_stick);
+	aux_stick = new PhysBody();
+	aux_stick = App->physics->CreateRectangle(422 + 2, 245 + 25, 5, 50, false);
+	Sticks.add(aux_stick);
+
+	aux_stick = new PhysBody();
+	aux_stick = App->physics->CreateRectangle(58 + 2, 868 + 55, 5, 126, false);
+	Sticks.add(aux_stick);
+
+
+	aux_stick = new PhysBody();
+	aux_stick = App->physics->CreateRectangle(538 + 2, 868 + 55, 5, 126, false);
+	Sticks.add(aux_stick);
+
+
+
+
 
 
 	launcher_joint = App->physics->CreateJoint(a, b, e_prismaticJoint, 5.0f, -10.0f, false);
