@@ -29,13 +29,18 @@ public:
 	SDL_Texture* background;
 	Animation Bumper;
 	Animation Ball_anim;
+	Animation Speed_booster;
+	Animation Lights_anim;
 	SDL_Texture* Sprites;
 	uint bonus_fx;
+	uint lights_fx;
 	p2Point<int> ray;
 	bool ray_on;
 private:
 	p2List<PhysBody*> Bumpers;
 	p2List<PhysBody*> Sticks;
+	p2List<PhysBody*> SpeedBoosters;
+	p2List<PhysBody*> Lights;
 	PhysJoint* launcher_joint;
 	PhysBody* Ball, *Chain, *Rare_thing_left, *Rare_thing_right, *Curve_left, *Curve_right;
 

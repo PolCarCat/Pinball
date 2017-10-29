@@ -34,7 +34,16 @@ bool ModuleSceneIntro::Start()
 	Ball_anim.PushBack({ 465,0, 30,30 });
 	Ball_anim.speed = 0;
 
-	bonus_fx = App->audio->LoadFx("Game/pinball/bonus.wav");
+	Speed_booster.PushBack({ 465,0, 30,30 });
+	Speed_booster.speed = 0;
+
+	Lights_anim.PushBack({ 495,0,18,18 });
+	Lights_anim.PushBack({ 514,0,18,18 });
+	Lights_anim.speed = 0;
+	Lights_anim.loop = false;
+
+	bonus_fx = App->audio->LoadFx("FX/bonus.wav");
+	lights_fx = App->audio->LoadFx("FX/bonus 2.wav");
 	Sprites = App->textures->Load("Sprites/Sprite sheet.png");
 
 	end_game_sensor = App->physics->CreateRectangleSensor(SCREEN_WIDTH / 2, SCREEN_HEIGHT, SCREEN_WIDTH, 50);
@@ -49,6 +58,7 @@ bool ModuleSceneIntro::Start()
 	PhysBody *a = App->physics->CreateRectangle(200, 600, 1, 1);
 	PhysBody *b = App->physics->CreateRectangle(200, 650, 20, 10, true);
 
+	//Upper part sticks
 	PhysBody* aux_stick = new PhysBody();
 	aux_stick = App->physics->CreateRectangle(166 + 6, 246 + 25 ,5, 50, false);
 	Sticks.add(aux_stick);
@@ -77,13 +87,9 @@ bool ModuleSceneIntro::Start()
 	aux_stick = App->physics->CreateRectangle(538 + 2, 868 + 55, 5, 126, false);
 	Sticks.add(aux_stick);
 
-
-
-
-
-
 	launcher_joint = App->physics->CreateJoint(a, b, e_prismaticJoint, 5.0f, -10.0f, false);
 	
+	//Circle Bumpers
 	PhysBody* aux_obj = new PhysBody();
 	aux_obj = App->physics->CreateCircle(262+ 35, 394 + 35, 30, false);
 	aux_obj->body_type = BUMPER;
@@ -119,6 +125,25 @@ bool ModuleSceneIntro::Start()
 	Ball->anim = Ball_anim;
 	Ball->listener = this;
 
+	//Speedboosters
+
+
+
+	//Lights
+
+	aux_obj = new PhysBody();
+	aux_obj = App->physics->CreateRectangleSensor(202, 260 - 18 , 18, 18);
+	aux_obj->body_type = LIGHTS;
+	aux_obj->anim = Lights_anim;
+	aux_obj->listener = this;
+	Lights.add(aux_obj);
+
+	aux_obj = new PhysBody();
+	aux_obj = App->physics->CreateRectangleSensor(202, 290, 18, 18);
+	aux_obj->body_type = LIGHTS;
+	aux_obj->anim = Lights_anim;
+	aux_obj->listener = this;
+	Lights.add(aux_obj);
 	
 
 	return ret;
@@ -136,11 +161,6 @@ bool ModuleSceneIntro::CleanUp()
 update_status ModuleSceneIntro::Update()
 {
 	App->renderer->Blit(background, 0, 0);
-	iPoint ball_pos;
-	Ball->GetPosition(ball_pos.x, ball_pos.y);
-	//App->renderer->CameraFollow(ball_pos);
-
-	App->renderer->Blit(Sprites, ball_pos.x, ball_pos.y, &Ball->anim.GetCurrentFrame().rect);
 
 
 	if(App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
@@ -167,7 +187,22 @@ update_status ModuleSceneIntro::Update()
 		App->renderer->Blit(Sprites, bumper_pos.x, bumper_pos.y, &bumper_rect);
 
 	}
-	
+
+	for (p2List_item<PhysBody*>* new_obj = Lights.getFirst(); new_obj != NULL; new_obj = new_obj->next)
+	{
+		iPoint lights_pos;
+		new_obj->data->GetPosition(lights_pos.x, lights_pos.y);
+		SDL_Rect lights_rect = new_obj->data->anim.GetCurrentFrame().rect;
+		App->renderer->Blit(Sprites, lights_pos.x + lights_rect.w / 2, lights_pos.y + lights_rect.h/2 , &lights_rect);
+
+	}
+
+	iPoint ball_pos;
+	Ball->GetPosition(ball_pos.x, ball_pos.y);
+	//App->renderer->CameraFollow(ball_pos);
+
+	App->renderer->Blit(Sprites, ball_pos.x, ball_pos.y, &Ball->anim.GetCurrentFrame().rect);
+
 
 	if(App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
 	{
@@ -236,6 +271,11 @@ void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 			
 			bodyB->anim.speed = 1;
 		}
+		else if (bodyB->body_type == LIGHTS)
+		{
+			bodyB->anim.speed = 1;
+			App->audio->PlayFx(lights_fx);
+		}
 	}
-	}
+}
 
