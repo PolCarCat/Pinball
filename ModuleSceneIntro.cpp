@@ -118,8 +118,8 @@ bool ModuleSceneIntro::Start()
 	//Squared bumpers
 
 	aux_obj = new PhysBody();
-	aux_obj = App->physics->CreateRectangle(200, 400, 50,50 , false);
-	aux_obj->body_type = SQUARED_BUMPER;
+	aux_obj = App->physics->CreateRectangleSensor(200, 400, 50,50);
+	aux_obj->body_type = SPEED_BOOSTER;
 	aux_obj->anim = Bumper;
 	aux_obj->listener = this;
 	Bumpers.add(aux_obj);
@@ -341,10 +341,11 @@ void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 	{
 		bodyB->GetPosition(x, y);
 		App->renderer->DrawCircle(x, y, 50, 100, 100, 100);
+
+		b2Vec2 speed_vec = bodyA->body->GetLinearVelocity();
 		if (bodyB->body_type == BUMPER)
 		{
-			App->audio->PlayFx(bonus_fx);
-			b2Vec2 speed_vec = bodyA->body->GetLinearVelocity();
+			App->audio->PlayFx(bonus_fx);			
 			b2Vec2 Normal_vec = { bodyA->body->GetPosition().x + bodyA->width / 2 - bodyB->body->GetPosition().x + bodyB->width / 2, bodyA->body->GetPosition().y + bodyA->height / 2 - bodyB->body->GetPosition().y + bodyB->height / 2 };
 			bodyA->body->ApplyLinearImpulse({ speed_vec.x - (0.5f * Normal_vec.x ), speed_vec.y - (0.5f * Normal_vec.y) }, { 0,0 }, false);
 			
@@ -354,6 +355,10 @@ void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 		{
 			bodyB->anim.speed = 1;
 			App->audio->PlayFx(lights_fx);
+		}
+		else if (bodyB->body_type == SPEED_BOOSTER)
+		{
+			bodyA->body->ApplyLinearImpulse({ speed_vec.x * 1.5f , speed_vec.y * 1.5f  }, { 0,0 }, false);
 		}
 	}
 }
