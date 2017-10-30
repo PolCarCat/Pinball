@@ -38,11 +38,11 @@ public:
 	bool ray_on;
 private:
 	p2List<PhysBody*> Bumpers;
-	p2List<PhysBody*> Sticks;
 	p2List<PhysBody*> SpeedBoosters;
 	p2List<PhysBody*> Lights;
+	p2List<PhysBody*> Squared_bumpers;
 	PhysJoint* launcher_joint;
-	PhysBody* Ball, *Chain, *Rare_thing_left, *Rare_thing_right, *Curve_left, *Curve_right;
+	PhysBody* Ball, *Chain, *Rare_thing_left, *Rare_thing_right, *Curve_left, *Curve_right, *Center_chain, *Left_bumper_chain, *Right_bumper_chain;
 
 	int structure_chain[120] = {
 	578, 1070,
@@ -154,5 +154,43 @@ private:
 		579, 744
 	};
 
+	int center_chain[24] = {
+		277, 684,
+		288, 678,
+		305, 678,
+		321, 684,
+		335, 676,
+		334, 660,
+		320, 652,
+		306, 659,
+		289, 659,
+		272, 652,
+		259, 661,
+		260, 676
+	};
+	int left_bumper_chain[20] = {
+		103, 980,
+		104, 839,
+		108, 826,
+		119, 822,
+		131, 828,
+		190, 1009,
+		190, 1021,
+		181, 1029,
+		168, 1027,
+		110, 993
+	};
+
+	int right_bumper_chain[18] = {
+		495, 976,
+		495, 839,
+		485, 825,
+		470, 826,
+		462, 838,
+		411, 1007,
+		414, 1024,
+		430, 1029,
+		491, 989
+	};
 
 };

@@ -18,6 +18,7 @@ enum Body_type
 {
 	BALL = 1,
 	BUMPER,
+	SQUARED_BUMPER,
 	SPEED_BOOSTER,
 	LIGHTS,
 	WALL,

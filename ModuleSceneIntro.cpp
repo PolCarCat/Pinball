@@ -55,37 +55,24 @@ bool ModuleSceneIntro::Start()
 	Rare_thing_right = App->physics->CreateChain(0, 0, rare_thing_right, 24, false);
 	Curve_left = App->physics->CreateChain(0, 0, curve_left, 12, false);
 	Curve_right = App->physics->CreateChain(0, 0, curve_right, 16, false);
+	Center_chain = App->physics->CreateChain(0, 0, center_chain, 24, false);
+	Left_bumper_chain = App->physics->CreateChain(0, 0, left_bumper_chain, 20);
+	Right_bumper_chain = App->physics->CreateChain(0, 0, right_bumper_chain, 18);
+
+
 	PhysBody *a = App->physics->CreateRectangle(200, 600, 1, 1);
 	PhysBody *b = App->physics->CreateRectangle(200, 650, 20, 10, true);
 
 	//Upper part sticks
-	PhysBody* aux_stick = new PhysBody();
-	aux_stick = App->physics->CreateRectangle(166 + 6, 246 + 25 ,5, 50, false);
-	Sticks.add(aux_stick);
 
-	aux_stick = new PhysBody();
-	aux_stick = App->physics->CreateRectangle(230 + 4, 239 + 25, 5, 50, false);
-	Sticks.add(aux_stick);
+	App->physics->CreateRectangle(166 + 6, 246 + 25 ,5, 50, false);
+	App->physics->CreateRectangle(230 + 4, 239 + 25, 5, 50, false);
+	App->physics->CreateRectangle(294 + 4, 238 + 25, 5, 50, false);
+	App->physics->CreateRectangle(359 + 2, 240 + 25, 5, 50, false);;
+	App->physics->CreateRectangle(422 + 2, 245 + 25, 5, 50, false);
+	App->physics->CreateRectangle(58 + 2, 868 + 55, 5, 126, false);
+	App->physics->CreateRectangle(538 + 2, 868 + 55, 5, 126, false);
 
-	aux_stick = new PhysBody();
-	aux_stick = App->physics->CreateRectangle(294 + 4, 238 + 25, 5, 50, false);
-	Sticks.add(aux_stick);
-
-	aux_stick = new PhysBody();
-	aux_stick = App->physics->CreateRectangle(359 + 2, 240 + 25, 5, 50, false);
-	Sticks.add(aux_stick);
-	aux_stick = new PhysBody();
-	aux_stick = App->physics->CreateRectangle(422 + 2, 245 + 25, 5, 50, false);
-	Sticks.add(aux_stick);
-
-	aux_stick = new PhysBody();
-	aux_stick = App->physics->CreateRectangle(58 + 2, 868 + 55, 5, 126, false);
-	Sticks.add(aux_stick);
-
-
-	aux_stick = new PhysBody();
-	aux_stick = App->physics->CreateRectangle(538 + 2, 868 + 55, 5, 126, false);
-	Sticks.add(aux_stick);
 
 	launcher_joint = App->physics->CreateJoint(a, b, e_prismaticJoint, 5.0f, -10.0f, false);
 	
@@ -119,6 +106,7 @@ bool ModuleSceneIntro::Start()
 	aux_obj->listener = this;
 	Bumpers.add(aux_obj);
 
+	//Ball
 
 	Ball = App->physics->CreateCircle(262/ 2, 304 / 2 , 15,true);
 	Ball->body_type = BALL;
@@ -127,7 +115,14 @@ bool ModuleSceneIntro::Start()
 
 	//Speedboosters
 
+	//Squared bumpers
 
+	aux_obj = new PhysBody();
+	aux_obj = App->physics->CreateRectangle(200, 400, 50,50 , false);
+	aux_obj->body_type = SQUARED_BUMPER;
+	aux_obj->anim = Bumper;
+	aux_obj->listener = this;
+	Bumpers.add(aux_obj);
 
 	//Lights
 
