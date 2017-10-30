@@ -53,7 +53,7 @@ bool ModuleSceneIntro::Start()
 
 	Rare_thing_left = App->physics->CreateChain(0, 0, rare_thing_left, 24, false);
 	Rare_thing_right = App->physics->CreateChain(0, 0, rare_thing_right, 24, false);
-	Curve_left = App->physics->CreateChain(0, 0, curve_left, 12, false);
+	Curve_left = App->physics->CreateChain(0, 0, curve_left, 16, false);
 	Curve_right = App->physics->CreateChain(0, 0, curve_right, 16, false);
 	Center_chain = App->physics->CreateChain(0, 0, center_chain, 24, false);
 	Left_bumper_chain = App->physics->CreateChain(0, 0, left_bumper_chain, 20);
@@ -140,6 +140,90 @@ bool ModuleSceneIntro::Start()
 	aux_obj->listener = this;
 	Lights.add(aux_obj);
 	
+	aux_obj = new PhysBody();
+	aux_obj = App->physics->CreateRectangleSensor(266, 226, 18, 18);
+	aux_obj->body_type = LIGHTS;
+	aux_obj->anim = Lights_anim;
+	aux_obj->listener = this;
+	Lights.add(aux_obj);
+
+	aux_obj = new PhysBody();
+	aux_obj = App->physics->CreateRectangleSensor(266, 286, 18, 18);
+	aux_obj->body_type = LIGHTS;
+	aux_obj->anim = Lights_anim;
+	aux_obj->listener = this;
+	Lights.add(aux_obj);
+
+	aux_obj = new PhysBody();
+	aux_obj = App->physics->CreateRectangleSensor(330, 225, 18, 18);
+	aux_obj->body_type = LIGHTS;
+	aux_obj->anim = Lights_anim;
+	aux_obj->listener = this;
+	Lights.add(aux_obj);
+
+	aux_obj = new PhysBody();
+	aux_obj = App->physics->CreateRectangleSensor(330, 287, 18, 18);
+	aux_obj->body_type = LIGHTS;
+	aux_obj->anim = Lights_anim;
+	aux_obj->listener = this;
+	Lights.add(aux_obj);
+
+	aux_obj = new PhysBody();
+	aux_obj = App->physics->CreateRectangleSensor(393, 245, 18, 18);
+	aux_obj->body_type = LIGHTS;
+	aux_obj->anim = Lights_anim;
+	aux_obj->listener = this;
+	Lights.add(aux_obj);
+
+
+	aux_obj = new PhysBody();
+	aux_obj = App->physics->CreateRectangleSensor(393, 290, 18, 18);
+	aux_obj->body_type = LIGHTS;
+	aux_obj->anim = Lights_anim;
+	aux_obj->listener = this;
+	Lights.add(aux_obj);
+
+	aux_obj = new PhysBody();
+	aux_obj = App->physics->CreateRectangleSensor(140, 386, 18, 18);
+	aux_obj->body_type = LIGHTS;
+	aux_obj->anim = Lights_anim;
+	aux_obj->listener = this;
+	Lights.add(aux_obj);
+
+	aux_obj = new PhysBody();
+	aux_obj = App->physics->CreateRectangleSensor(93, 432, 18, 18);
+	aux_obj->body_type = LIGHTS;
+	aux_obj->anim = Lights_anim;
+	aux_obj->listener = this;
+	Lights.add(aux_obj);
+
+	aux_obj = new PhysBody();
+	aux_obj = App->physics->CreateRectangleSensor(458, 389, 18, 18);
+	aux_obj->body_type = LIGHTS;
+	aux_obj->anim = Lights_anim;
+	aux_obj->listener = this;
+	Lights.add(aux_obj);
+
+	aux_obj = new PhysBody();
+	aux_obj = App->physics->CreateRectangleSensor(505, 434, 18, 18);
+	aux_obj->body_type = LIGHTS;
+	aux_obj->anim = Lights_anim;
+	aux_obj->listener = this;
+	Lights.add(aux_obj);
+
+	aux_obj = new PhysBody();
+	aux_obj = App->physics->CreateRectangleSensor(199, 668, 18, 18);
+	aux_obj->body_type = LIGHTS;
+	aux_obj->anim = Lights_anim;
+	aux_obj->listener = this;
+	Lights.add(aux_obj);
+
+	aux_obj = new PhysBody();
+	aux_obj = App->physics->CreateRectangleSensor(395, 670, 18, 18);
+	aux_obj->body_type = LIGHTS;
+	aux_obj->anim = Lights_anim;
+	aux_obj->listener = this;
+	Lights.add(aux_obj);
 
 	return ret;
 }
