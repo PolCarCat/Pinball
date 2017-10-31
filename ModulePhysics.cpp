@@ -114,7 +114,7 @@ PhysBody* ModulePhysics::CreateRectangle(int x, int y, int width, int height, bo
 
 	b2Body* b = world->CreateBody(&body);
 	if (angle != 0.0f)
-		b->SetTransform(b->GetPosition(), angle);
+		b->SetTransform(b->GetPosition(), 0.0174532925 * angle);
 
 	b2PolygonShape box;
 	box.SetAsBox(PIXEL_TO_METERS(width) * 0.5f, PIXEL_TO_METERS(height) * 0.5f);

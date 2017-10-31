@@ -45,6 +45,9 @@ bool ModuleSceneIntro::Start()
 	speedbooster.PushBack({ 790,0, 33, 94 });
 	speedbooster.speed = 0;
 
+	Squared_Bumper.PushBack({ 0,0,0,0 });
+
+
 	bonus_fx = App->audio->LoadFx("FX/bonus.wav");
 	lights_fx = App->audio->LoadFx("FX/bonus 2.wav");
 	Sprites = App->textures->Load("Sprites/Sprite sheet.png");
@@ -134,7 +137,7 @@ bool ModuleSceneIntro::Start()
 
 	speedboosterright = -195;
 	aux_obj = new PhysBody();
-	aux_obj = App->physics->CreateRectangleSensor(535, 750, 30, 84, speedboosterright);
+	aux_obj = App->physics->CreateRectangleSensor(530, 750, 30, 84, speedboosterright);
 	aux_obj->body_type = SPEED_BOOSTER;
 	aux_obj->anim = speedbooster;
 	aux_obj->listener = this;
@@ -144,12 +147,19 @@ bool ModuleSceneIntro::Start()
 
 	//Squared bumpers
 
-	//aux_obj = new PhysBody();
-	//aux_obj = App->physics->CreateRectangleSensor(200, 400, 50, 50 , 40);
-	//aux_obj->body_type = SQUARED_BUMPER;
-	//aux_obj->anim = Bumper;
-	//aux_obj->listener = this;
-	//Bumpers.add(aux_obj);
+	aux_obj = new PhysBody();
+	aux_obj = App->physics->CreateRectangle(161, 925, 150, 10 , false, 73);
+	aux_obj->body_type = BUMPER;
+	aux_obj->anim = Squared_Bumper;
+	aux_obj->listener = this;
+	Bumpers.add(aux_obj);
+
+	aux_obj = new PhysBody();
+	aux_obj = App->physics->CreateRectangle(438, 925, 150, 10, false,  108);
+	aux_obj->body_type = BUMPER;
+	aux_obj->anim = Squared_Bumper;
+	aux_obj->listener = this;
+	Bumpers.add(aux_obj);
 
 	//Lights
 
@@ -394,7 +404,7 @@ void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 		{
 			App->audio->PlayFx(bonus_fx);			
 			b2Vec2 Normal_vec = { bodyA->body->GetPosition().x + bodyA->width / 2 - bodyB->body->GetPosition().x + bodyB->width / 2, bodyA->body->GetPosition().y + bodyA->height / 2 - bodyB->body->GetPosition().y + bodyB->height / 2 };
-			bodyA->body->ApplyLinearImpulse({ speed_vec.x - (0.5f * Normal_vec.x ), speed_vec.y - (0.5f * Normal_vec.y) }, { 0,0 }, false);
+			bodyA->body->ApplyLinearImpulse({ speed_vec.x * 1.5f, speed_vec.y *1.5f }, { 0,0 }, false);
 			
 			bodyB->anim.speed = 1;
 		}
