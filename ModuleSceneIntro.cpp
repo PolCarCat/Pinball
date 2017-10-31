@@ -60,9 +60,16 @@ bool ModuleSceneIntro::Start()
 	Right_bumper_chain = App->physics->CreateChain(0, 0, right_bumper_chain, 18);
 
 
-	PhysBody *a = App->physics->CreateRectangle(200, 600, 1, 1);
-	PhysBody *b = App->physics->CreateRectangle(200, 650, 20, 10, true);
-	launcher_joint = App->physics->CreateJoint(a, b, e_prismaticJoint, 5.0f, -10.0f, false);
+	PhysBody *a = App->physics->CreateRectangle(610, 1155, 1, 1);
+	PhysBody *b = App->physics->CreateRectangle(610, 1190, 20, 10, true);
+	launcher_joint = App->physics->CreateJoint(a, b, e_prismaticJoint, 40.0f, -60.0f, false);
+
+	PhysBody *static_part = App->physics->CreateCircle(191, 1195, 1);
+	PhysBody *dynamic_part = App->physics->CreateRectangle(191 + 20, 1195, 30, 10, true);
+
+	Left_flipper = App->physics->CreateJoint(static_part, dynamic_part, e_revoluteJoint, 0, 10.0f,true);
+
+
 
 
 	//Upper part sticks
@@ -108,7 +115,7 @@ bool ModuleSceneIntro::Start()
 
 	//Ball
 
-	Ball = App->physics->/*CreateRectangle(262 / 2, 304 / 2, 15*2, 15*2, true, 90.0f);*/CreateCircle(262/ 2, 304 / 2 , 15,true);
+	Ball = App->physics->/*CreateRectangle(262 / 2, 304 / 2, 15*2, 15*2, true, 90.0f);*/CreateCircle(600, 1140 , 15,true);
 	Ball->body_type = BALL;
 	Ball->anim = Ball_anim;
 	Ball->listener = this;
@@ -119,7 +126,7 @@ bool ModuleSceneIntro::Start()
 
 	aux_obj = new PhysBody();
 	aux_obj = App->physics->CreateRectangleSensor(200, 400, 50,50);
-	aux_obj->body_type = SPEED_BOOSTER;
+	aux_obj->body_type = SQUARED_BUMPER;
 	aux_obj->anim = Bumper;
 	aux_obj->listener = this;
 	Bumpers.add(aux_obj);
@@ -256,7 +263,16 @@ update_status ModuleSceneIntro::Update()
 		((b2PrismaticJoint*)launcher_joint->joint)->EnableMotor(false);
 	}
 	
+	if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
+	{
+		/*ray_on = !ray_on;
+		ray.x = App->input->GetMouseX();
+		ray.y = App->input->GetMouseY();*/
+
+		((b2PrismaticJoint*)Left_flipper->joint)->EnableMotor(false);
+		
 	
+	}
 
 	for (p2List_item<PhysBody*>* new_obj = Bumpers.getFirst(); new_obj != NULL; new_obj = new_obj->next)
 	{

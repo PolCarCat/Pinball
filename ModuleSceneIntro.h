@@ -41,7 +41,7 @@ private:
 	p2List<PhysBody*> SpeedBoosters;
 	p2List<PhysBody*> Lights;
 	p2List<PhysBody*> Squared_bumpers;
-	PhysJoint* launcher_joint;
+	PhysJoint* launcher_joint, *Left_flipper;
 	PhysBody* Ball, *Chain, *Rare_thing_left, *Rare_thing_right, *Curve_left, *Curve_right, *Center_chain, *Left_bumper_chain, *Right_bumper_chain;
 
 	int structure_chain[120] = {
