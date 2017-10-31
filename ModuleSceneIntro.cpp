@@ -42,6 +42,9 @@ bool ModuleSceneIntro::Start()
 	Lights_anim.speed = 0;
 	Lights_anim.loop = false;
 
+	speedbooster.PushBack({ 790,0, 33, 94 });
+	speedbooster.speed = 0;
+
 	bonus_fx = App->audio->LoadFx("FX/bonus.wav");
 	lights_fx = App->audio->LoadFx("FX/bonus 2.wav");
 	Sprites = App->textures->Load("Sprites/Sprite sheet.png");
@@ -64,10 +67,10 @@ bool ModuleSceneIntro::Start()
 	PhysBody *b = App->physics->CreateRectangle(610, 1190, 20, 10, true);
 	launcher_joint = App->physics->CreateJoint(a, b, e_prismaticJoint, 40.0f, -60.0f, false);
 
-	PhysBody *static_part = App->physics->CreateCircle(191, 1195, 1);
+	PhysBody *static_part = App->physics->CreateCircle(191, 1195, 10);
 	PhysBody *dynamic_part = App->physics->CreateRectangle(191 + 20, 1195, 30, 10, true);
 
-	Left_flipper = App->physics->CreateJoint(static_part, dynamic_part, e_revoluteJoint, 0, 10.0f,true);
+	Left_flipper = App->physics->CreateJoint(static_part, dynamic_part, e_revoluteJoint, 0, 10.0f,false);
 
 
 
@@ -121,15 +124,32 @@ bool ModuleSceneIntro::Start()
 	Ball->listener = this;
 
 	//Speedboosters
+	speedboosterleft = 195;
+	aux_obj = new PhysBody();
+	aux_obj = App->physics->CreateRectangleSensor(65, 750, 30, 84, speedboosterleft);
+	aux_obj->body_type = SPEED_BOOSTER;
+	aux_obj->anim = speedbooster;
+	aux_obj->listener = this;
+	SpeedBoosters.add(aux_obj);
+
+	speedboosterright = -195;
+	aux_obj = new PhysBody();
+	aux_obj = App->physics->CreateRectangleSensor(535, 750, 30, 84, speedboosterright);
+	aux_obj->body_type = SPEED_BOOSTER;
+	aux_obj->anim = speedbooster;
+	aux_obj->listener = this;
+	SpeedBoosters.add(aux_obj);
+
+
 
 	//Squared bumpers
 
-	aux_obj = new PhysBody();
-	aux_obj = App->physics->CreateRectangleSensor(200, 400, 50,50);
-	aux_obj->body_type = SQUARED_BUMPER;
-	aux_obj->anim = Bumper;
-	aux_obj->listener = this;
-	Bumpers.add(aux_obj);
+	//aux_obj = new PhysBody();
+	//aux_obj = App->physics->CreateRectangleSensor(200, 400, 50, 50 , 40);
+	//aux_obj->body_type = SQUARED_BUMPER;
+	//aux_obj->anim = Bumper;
+	//aux_obj->listener = this;
+	//Bumpers.add(aux_obj);
 
 	//Lights
 
@@ -269,7 +289,7 @@ update_status ModuleSceneIntro::Update()
 		ray.x = App->input->GetMouseX();
 		ray.y = App->input->GetMouseY();*/
 
-		((b2PrismaticJoint*)Left_flipper->joint)->EnableMotor(false);
+		((b2PrismaticJoint*)Left_flipper->joint)->EnableMotor(true);
 		
 	
 	}
@@ -291,6 +311,17 @@ update_status ModuleSceneIntro::Update()
 		App->renderer->Blit(Sprites, lights_pos.x + lights_rect.w / 2, lights_pos.y + lights_rect.h/2 , &lights_rect);
 
 	}
+
+	
+	iPoint leftspeed_pos;
+	SpeedBoosters.getFirst()->data->GetPosition(leftspeed_pos.x, leftspeed_pos.y);
+	SDL_Rect leftspeed_rect = SpeedBoosters.getFirst()->data->anim.GetCurrentFrame().rect;
+	App->renderer->Blit(Sprites, leftspeed_pos.x + leftspeed_rect.w / 2, leftspeed_pos.y + leftspeed_rect.h / 2, &leftspeed_rect,1,speedboosterleft);
+
+	iPoint rightspeed_pos;
+	SpeedBoosters.getLast()->data->GetPosition(rightspeed_pos.x, rightspeed_pos.y);
+	SDL_Rect rightspeed_rect = SpeedBoosters.getLast()->data->anim.GetCurrentFrame().rect;
+	App->renderer->Blit(Sprites, rightspeed_pos.x + rightspeed_rect.w / 2, rightspeed_pos.y + rightspeed_rect.h / 2, &rightspeed_rect, 1, speedboosterright,true);
 
 	iPoint ball_pos;
 	Ball->GetPosition(ball_pos.x, ball_pos.y);

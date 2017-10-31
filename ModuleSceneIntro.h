@@ -31,6 +31,8 @@ public:
 	Animation Ball_anim;
 	Animation Speed_booster;
 	Animation Lights_anim;
+	Animation speedbooster;
+	float speedboosterleft, speedboosterright;
 	SDL_Texture* Sprites;
 	uint bonus_fx;
 	uint lights_fx;
