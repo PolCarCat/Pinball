@@ -24,6 +24,7 @@ enum Body_type
 	WALL,
 	OTHERS
 };
+
 class PhysBody
 {
 public:
@@ -43,11 +44,6 @@ public:
 	Body_type body_type;
 	Animation anim;
 };
-
-
-
-
-
 
 
 class PhysJoint {
@@ -79,8 +75,8 @@ public:
 	bool CleanUp();
 
 	PhysBody* CreateCircle(int x, int y, int radius, bool dyn = false);
-	PhysBody* CreateRectangle(int x, int y, int width, int height, bool dyn = false);
-	PhysBody* CreateRectangleSensor(int x, int y, int width, int height);
+	PhysBody* CreateRectangle(int x, int y, int width, int height, bool dyn = false, float angle = 0.0f);
+	PhysBody* CreateRectangleSensor(int x, int y, int width, int height, float angle = 0.0f);
 	PhysBody* CreateChain(int x, int y, int* points, int size, bool dyn = false);
 	PhysJoint* CreateJoint(PhysBody *bodyA, PhysBody *bodyB, b2JointType type, float max_length, float speed = 1.0f,
 		bool collide_connected = false, b2Vec2 axis = { 0.0f, 1.0f }, b2Vec2 anchor1 = { 1.0f, 1.0f }, b2Vec2 anchor2 = { 1.0f, 1.0f });

@@ -33,7 +33,7 @@ bool ModulePhysics::Start()
 	world->SetContactListener(this);
 
 	// needed to create joints like mouse joint
-	b2BodyDef bd;
+	/*b2BodyDef bd;
 	ground = world->CreateBody(&bd);
 
 	// big static circle as "ground" in the middle of the screen
@@ -52,7 +52,7 @@ bool ModulePhysics::Start()
 
 	b2FixtureDef fixture;
 	fixture.shape = &shape;
-	big_ball->CreateFixture(&fixture);
+	big_ball->CreateFixture(&fixture);*/
 
 	return true;
 }
@@ -104,7 +104,7 @@ PhysBody* ModulePhysics::CreateCircle(int x, int y, int radius, bool dyn)
 	return pbody;
 }
 
-PhysBody* ModulePhysics::CreateRectangle(int x, int y, int width, int height, bool dyn)
+PhysBody* ModulePhysics::CreateRectangle(int x, int y, int width, int height, bool dyn, float angle)
 {
 	b2BodyDef body;
 	if (dyn)
@@ -113,6 +113,9 @@ PhysBody* ModulePhysics::CreateRectangle(int x, int y, int width, int height, bo
 	body.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
 
 	b2Body* b = world->CreateBody(&body);
+	if (angle != 0.0f)
+		b->SetTransform(b->GetPosition(), angle);
+
 	b2PolygonShape box;
 	box.SetAsBox(PIXEL_TO_METERS(width) * 0.5f, PIXEL_TO_METERS(height) * 0.5f);
 
@@ -131,13 +134,16 @@ PhysBody* ModulePhysics::CreateRectangle(int x, int y, int width, int height, bo
 	return pbody;
 }
 
-PhysBody* ModulePhysics::CreateRectangleSensor(int x, int y, int width, int height)
+PhysBody* ModulePhysics::CreateRectangleSensor(int x, int y, int width, int height, float angle)
 {
 	b2BodyDef body;
 	body.type = b2_staticBody;
 	body.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
 
 	b2Body* b = world->CreateBody(&body);
+	if (angle != 0.0f)
+		b->SetTransform(b->GetPosition(), angle);
+
 	b2PolygonShape box;
 	box.SetAsBox(PIXEL_TO_METERS(width) * 0.5f, PIXEL_TO_METERS(height) * 0.5f);
 

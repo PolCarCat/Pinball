@@ -62,6 +62,8 @@ bool ModuleSceneIntro::Start()
 
 	PhysBody *a = App->physics->CreateRectangle(200, 600, 1, 1);
 	PhysBody *b = App->physics->CreateRectangle(200, 650, 20, 10, true);
+	launcher_joint = App->physics->CreateJoint(a, b, e_prismaticJoint, 5.0f, -10.0f, false);
+
 
 	//Upper part sticks
 
@@ -73,8 +75,6 @@ bool ModuleSceneIntro::Start()
 	App->physics->CreateRectangle(58 + 2, 868 + 55, 5, 126, false);
 	App->physics->CreateRectangle(538 + 2, 868 + 55, 5, 126, false);
 
-
-	launcher_joint = App->physics->CreateJoint(a, b, e_prismaticJoint, 5.0f, -10.0f, false);
 	
 	//Circle Bumpers
 	PhysBody* aux_obj = new PhysBody();
@@ -108,7 +108,7 @@ bool ModuleSceneIntro::Start()
 
 	//Ball
 
-	Ball = App->physics->CreateCircle(262/ 2, 304 / 2 , 15,true);
+	Ball = App->physics->/*CreateRectangle(262 / 2, 304 / 2, 15*2, 15*2, true, 90.0f);*/CreateCircle(262/ 2, 304 / 2 , 15,true);
 	Ball->body_type = BALL;
 	Ball->anim = Ball_anim;
 	Ball->listener = this;
@@ -278,7 +278,7 @@ update_status ModuleSceneIntro::Update()
 
 	iPoint ball_pos;
 	Ball->GetPosition(ball_pos.x, ball_pos.y);
-	//App->renderer->CameraFollow(ball_pos);
+	App->renderer->CameraFollow(ball_pos);
 
 	App->renderer->Blit(Sprites, ball_pos.x, ball_pos.y, &Ball->anim.GetCurrentFrame().rect);
 

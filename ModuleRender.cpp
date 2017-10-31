@@ -193,8 +193,8 @@ bool ModuleRender::DrawCircle(int x, int y, int radius, Uint8 r, Uint8 g, Uint8 
 
 	for(uint i = 0; i < 360; ++i)
 	{
-		points[i].x = (int) (x + radius * cos( i * factor));
-		points[i].y = (int) (y + radius * sin( i * factor));
+		points[i].x = (int) (x + radius * cos( i * factor)) + (use_camera ? camera.x : 0);
+		points[i].y = (int) (y + radius * sin( i * factor)) + (use_camera ? camera.y : 0);
 	}
 
 	result = SDL_RenderDrawPoints(renderer, points, 360);
@@ -209,6 +209,8 @@ bool ModuleRender::DrawCircle(int x, int y, int radius, Uint8 r, Uint8 g, Uint8 
 }
 
 void ModuleRender::CameraFollow(iPoint p) {
-	camera.x = /*REDUCE_TO(camera.x,*/ -p.x/*, 1)*/;
-	camera.y = /*REDUCE_TO(camera.y,*/ -p.y/*, 1)*/;
+	//int delta_x = -(p.x - SCREEN_WIDTH / 2) + camera.x;
+	int delta_y = (p.y - SCREEN_HEIGHT / 2) - camera.y;
+	//camera.x = REDUCE_TO(camera.x, -p.x + SCREEN_WIDTH / 2, delta_x / 2);
+	camera.y = REDUCE_TO(camera.y, -p.y + SCREEN_HEIGHT / 2, 10);
 }
