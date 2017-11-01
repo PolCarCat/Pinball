@@ -93,6 +93,9 @@ bool ModuleSceneIntro::Start()
 	App->physics->CreateRectangle(422 + 2, 245 + 25, 5, 50, false);
 	App->physics->CreateRectangle(58 + 2, 868 + 55, 5, 126, false);
 	App->physics->CreateRectangle(538 + 2, 868 + 55, 5, 126, false);
+	App->physics->CreateRectangle(116, 1038, 5, 126, false, -58.0f);
+	App->physics->CreateRectangle(482, 1038, 5, 126, false, 58.0f);
+
 
 	
 	//Circle Bumpers
