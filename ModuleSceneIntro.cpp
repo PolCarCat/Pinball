@@ -71,13 +71,13 @@ bool ModuleSceneIntro::Start()
 	PhysBody *b = App->physics->CreateRectangle(610, 1190, 20, 10, true);
 	launcher_joint = App->physics->CreateJoint(a, b, e_prismaticJoint, 40.0f, -60.0f, false);
 
-	PhysBody *static_part = App->physics->CreateCircle((SCREEN_WIDTH / 2) -100, 1095, 10);
-	PhysBody *dynamic_part = App->physics->CreateRectangle((SCREEN_WIDTH / 2) -100, 1095, 100, 20, true);
+	PhysBody *static_part = App->physics->CreateCircle(190, 1090, 10);
+	PhysBody *dynamic_part = App->physics->CreateRectangle(180, 1090, 100, 20, true);
 
 	Left_flipper = App->physics->CreateJoint(static_part, dynamic_part, e_revoluteJoint, 0.0f, 100.0f, false, b2Vec2_zero, b2Vec2(0.0f, 0.0f), b2Vec2(-0.5f, 0.0f));
 
-	static_part = App->physics->CreateCircle((SCREEN_WIDTH / 2) +80, 1095, 10);
-	dynamic_part = App->physics->CreateRectangle((SCREEN_WIDTH / 2) +70, 1095, 100, 20, true);
+	static_part = App->physics->CreateCircle(408, 1090, 10);
+	dynamic_part = App->physics->CreateRectangle(408-10, 1095, 100, 20, true);
 
 	Right_flipper = App->physics->CreateJoint(static_part, dynamic_part, e_revoluteJoint, 0.0f, -100.0f, false, b2Vec2_zero, b2Vec2(0.0f, 0.0f), b2Vec2(+0.5f, 0.0f));
 
