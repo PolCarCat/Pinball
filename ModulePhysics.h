@@ -22,6 +22,7 @@ enum Body_type
 	SPEED_BOOSTER,
 	LIGHTS,
 	WALL,
+	END,
 	OTHERS
 };
 
@@ -74,8 +75,8 @@ public:
 	update_status PostUpdate();
 	bool CleanUp();
 
-	PhysBody* CreateCircle(int x, int y, int radius, bool dyn = false);
-	PhysBody* CreateRectangle(int x, int y, int width, int height, bool dyn = false, float angle = 0.0f);
+	PhysBody* CreateCircle(int x, int y, int radius, uint dyn = false);
+	PhysBody* CreateRectangle(int x, int y, int width, int height, uint dyn = 0, float angle = 0.0f);
 	PhysBody* CreateRectangleSensor(int x, int y, int width, int height, float angle = 0.0f);
 	PhysBody* CreateChain(int x, int y, int* points, int size, bool dyn = false);
 	PhysJoint* CreateJoint(PhysBody *bodyA, PhysBody *bodyB, b2JointType type, float max_length, float speed = 1.0f,

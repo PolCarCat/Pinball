@@ -52,10 +52,11 @@ bool ModuleSceneIntro::Start()
 	lights_fx = App->audio->LoadFx("FX/bonus 2.wav");
 	Sprites = App->textures->Load("Sprites/Sprite sheet.png");
 
-	end_game_sensor = App->physics->CreateRectangleSensor(SCREEN_WIDTH / 2, SCREEN_HEIGHT, SCREEN_WIDTH, 50);
+	end_game_sensor = App->physics->CreateRectangleSensor(SCREEN_WIDTH / 2, 1200, SCREEN_WIDTH, 50);
+	end_game_sensor->body_type = END;
 
 
-	Chain = App->physics->CreateChain(0, 0, structure_chain, 120, false );
+	Chain = App->physics->CreateChain(0, 0, structure_chain, 126, false );
 
 	Rare_thing_left = App->physics->CreateChain(0, 0, rare_thing_left, 24, false);
 	Rare_thing_right = App->physics->CreateChain(0, 0, rare_thing_right, 24, false);
@@ -70,10 +71,12 @@ bool ModuleSceneIntro::Start()
 	PhysBody *b = App->physics->CreateRectangle(610, 1190, 20, 10, true);
 	launcher_joint = App->physics->CreateJoint(a, b, e_prismaticJoint, 40.0f, -60.0f, false);
 
-	PhysBody *static_part = App->physics->CreateCircle(191, 1195, 10);
-	PhysBody *dynamic_part = App->physics->CreateRectangle(191 + 20, 1195, 30, 10, true);
+	PhysBody *static_part = App->physics->CreateCircle(191, 1195, 10, 0 );
+	PhysBody *dynamic_part = App->physics->CreateRectangle(191 + 20, 1195, 30, 10, 0);
 
-	Left_flipper = App->physics->CreateJoint(static_part, dynamic_part, e_revoluteJoint, 0, 10.0f,false);
+	Left_flipper = App->physics->CreateJoint(static_part, dynamic_part, e_revoluteJoint, 0, 10.0f, true, { 0, 0 }, { 0, 5 * METER_PER_PIXEL });
+	
+
 
 
 
@@ -290,7 +293,7 @@ update_status ModuleSceneIntro::Update()
 
 	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_UP)
 	{
-		((b2PrismaticJoint*)launcher_joint->joint)->EnableMotor(false);
+		((b2PrismaticJoint*)launcher_joint->joint)->EnableMotor(true);
 	}
 	
 	if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
@@ -299,7 +302,7 @@ update_status ModuleSceneIntro::Update()
 		ray.x = App->input->GetMouseX();
 		ray.y = App->input->GetMouseY();*/
 
-		((b2PrismaticJoint*)Left_flipper->joint)->EnableMotor(true);
+		((b2RevoluteJoint*)Left_flipper->joint)->EnableMotor(true);
 		
 	
 	}
@@ -416,6 +419,11 @@ void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 		else if (bodyB->body_type == SPEED_BOOSTER)
 		{
 			bodyA->body->ApplyLinearImpulse({ speed_vec.x * 1.5f , speed_vec.y * 1.5f  }, { 0,0 }, false);
+		}
+		else if (bodyB->body_type == END)
+		{
+			//bodyA->body->SetTransform({ 600, 1140 },bodyA->body->GetAngle());
+			
 		}
 	}
 }
