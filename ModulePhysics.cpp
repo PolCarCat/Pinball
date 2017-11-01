@@ -102,6 +102,8 @@ PhysBody* ModulePhysics::CreateCircle(int x, int y, int radius, uint dyn)
 	pbody->body = b;
 	b->SetUserData(pbody);
 	pbody->width = pbody->height = radius;
+	pbody->initial_pos = body.position;
+	pbody->initial_pos = body.position;
 
 	return pbody;
 }
@@ -136,6 +138,7 @@ PhysBody* ModulePhysics::CreateRectangle(int x, int y, int width, int height, ui
 	b->SetUserData(pbody);
 	pbody->width = width;
 	pbody->height = height;
+	pbody->initial_pos = body.position;
 
 	return pbody;
 }
@@ -165,6 +168,7 @@ PhysBody* ModulePhysics::CreateRectangleSensor(int x, int y, int width, int heig
 	b->SetUserData(pbody);
 	pbody->width = width;
 	pbody->height = height;
+	pbody->initial_pos = body.position;
 
 	return pbody;
 }
@@ -382,6 +386,10 @@ void PhysBody::GetPosition(int& x, int &y) const
 	y = METERS_TO_PIXELS(pos.y) - (height);
 }
 
+void PhysBody::SetPosition(b2Vec2 pos) {
+	body->SetTransform(pos, 0.0f);
+}
+
 float PhysBody::GetRotation() const
 {
 	return RADTODEG * body->GetAngle();
@@ -435,6 +443,12 @@ int PhysBody::RayCast(int x1, int y1, int x2, int y2, float& normal_x, float& no
 	}
 
 	return ret;
+}
+
+void PhysBody::Reset() {
+	SetPosition(initial_pos);
+	body->SetAngularVelocity(0.0f);
+	body->SetLinearVelocity(b2Vec2_zero);
 }
 
 void ModulePhysics::BeginContact(b2Contact* contact)

@@ -71,12 +71,12 @@ bool ModuleSceneIntro::Start()
 	PhysBody *b = App->physics->CreateRectangle(610, 1190, 20, 10, true);
 	launcher_joint = App->physics->CreateJoint(a, b, e_prismaticJoint, 40.0f, -60.0f, false);
 
-	PhysBody *static_part = App->physics->CreateCircle(190, 1090, 10);
+	PhysBody *static_part = App->physics->CreateCircle(190, 1090, 25);
 	PhysBody *dynamic_part = App->physics->CreateRectangle(180, 1090, 100, 20, true);
 
 	Left_flipper = App->physics->CreateJoint(static_part, dynamic_part, e_revoluteJoint, 0.0f, 100.0f, false, b2Vec2_zero, b2Vec2(0.0f, 0.0f), b2Vec2(-0.5f, 0.0f));
 
-	static_part = App->physics->CreateCircle(408, 1090, 10);
+	static_part = App->physics->CreateCircle(408, 1090, 25);
 	dynamic_part = App->physics->CreateRectangle(408-10, 1095, 100, 20, true);
 
 	Right_flipper = App->physics->CreateJoint(static_part, dynamic_part, e_revoluteJoint, 0.0f, -100.0f, false, b2Vec2_zero, b2Vec2(0.0f, 0.0f), b2Vec2(+0.5f, 0.0f));
@@ -124,8 +124,7 @@ bool ModuleSceneIntro::Start()
 	Bumpers.add(aux_obj);
 
 	//Ball
-
-	Ball = App->physics->CreateCircle(600, 1140 , 15,true);
+	Ball = App->physics->CreateCircle(600, 1140, 15,true);
 	Ball->body_type = BALL;
 	Ball->anim = Ball_anim;
 	Ball->listener = this;
@@ -269,6 +268,11 @@ bool ModuleSceneIntro::Start()
 	return ret;
 }
 
+void ModuleSceneIntro::Reset() {
+	Ball->Reset();
+	launcher_joint->body1->Reset();
+}
+
 // Load assets
 bool ModuleSceneIntro::CleanUp()
 {
@@ -294,7 +298,7 @@ update_status ModuleSceneIntro::Update()
 
 	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_UP)
 	{
-		((b2PrismaticJoint*)launcher_joint->joint)->EnableMotor(true);
+		((b2PrismaticJoint*)launcher_joint->joint)->EnableMotor(false);
 	}
 	
 	if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
@@ -313,6 +317,11 @@ update_status ModuleSceneIntro::Update()
 	if (App->input->GetKey(SDL_SCANCODE_X) == KEY_UP)
 	{
 		((b2RevoluteJoint*)Right_flipper->joint)->SetMotorSpeed(-((b2RevoluteJoint*)Right_flipper->joint)->GetMotorSpeed());
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN)
+	{
+		Reset();
 	}
 
 	for (p2List_item<PhysBody*>* new_obj = Bumpers.getFirst(); new_obj != NULL; new_obj = new_obj->next)
