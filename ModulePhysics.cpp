@@ -134,8 +134,8 @@ PhysBody* ModulePhysics::CreateRectangle(int x, int y, int width, int height, ui
 	PhysBody* pbody = new PhysBody();
 	pbody->body = b;
 	b->SetUserData(pbody);
-	pbody->width = width * 0.5f;
-	pbody->height = height * 0.5f;
+	pbody->width = width;
+	pbody->height = height;
 
 	return pbody;
 }
@@ -163,8 +163,8 @@ PhysBody* ModulePhysics::CreateRectangleSensor(int x, int y, int width, int heig
 	PhysBody* pbody = new PhysBody();
 	pbody->body = b;
 	b->SetUserData(pbody);
-	pbody->width = width * 0.5f;
-	pbody->height = height * 0.5f;
+	pbody->width = width;
+	pbody->height = height;
 
 	return pbody;
 }
@@ -228,17 +228,24 @@ PhysJoint* ModulePhysics::CreateJoint(PhysBody *bodyA, PhysBody *bodyB, b2JointT
 	b2RevoluteJointDef rev_joint_def;
 	b2RopeJointDef rope_joint_def;
 	b2PrismaticJointDef prism_joint_def;
+	int direction = (speed != 0.0f) ? (int)(abs(speed) / speed) : 0;
 
 	switch (type) {
 	case e_revoluteJoint:
 		rev_joint_def = *((b2RevoluteJointDef*)&joint_def);
-		rev_joint_def.Initialize(bodyA->body, bodyB->body, bodyB->body->GetWorldCenter());
+		rev_joint_def.Initialize(bodyA->body, bodyB->body, b2Vec2_zero);
 		rev_joint_def.motorSpeed = speed;
-		rev_joint_def.localAnchorA = b2Vec2( PIXEL_TO_METERS(bodyA->width) * (anchor1.x - 0.5f), PIXEL_TO_METERS(bodyA->height) * (anchor1.y - 0.5f) );
-		rev_joint_def.localAnchorB = b2Vec2(PIXEL_TO_METERS(bodyB->width) * (anchor2.x - 0.5f), PIXEL_TO_METERS(bodyB->height) * (anchor2.y - 0.5f));;
+		rev_joint_def.localAnchorA = b2Vec2( PIXEL_TO_METERS(bodyA->width) * (anchor1.x), PIXEL_TO_METERS(bodyA->height) * (anchor1.y) );
+		rev_joint_def.localAnchorB = b2Vec2( PIXEL_TO_METERS(bodyB->width) * (anchor2.x), PIXEL_TO_METERS(bodyB->height) * (anchor2.y) );
 		rev_joint_def.maxMotorTorque = 500.0f;
-		rev_joint_def.lowerAngle = M_PI/2;
-		rev_joint_def.upperAngle = M_PI;
+		if (direction == 1) {
+			rev_joint_def.lowerAngle = (M_PI / 2) + (M_PI / 4);
+			rev_joint_def.upperAngle = (M_PI) + (M_PI / 4);
+		}
+		else if (direction == -1) {
+			rev_joint_def.lowerAngle = -(M_PI / 4);
+			rev_joint_def.upperAngle = (M_PI / 4);
+		}
 		rev_joint_def.enableLimit = true;
 		rev_joint_def.enableMotor = true;
 		joint->joint = _joint = (b2RevoluteJoint*)world->CreateJoint(&rev_joint_def);
