@@ -239,12 +239,12 @@ PhysJoint* ModulePhysics::CreateJoint(PhysBody *bodyA, PhysBody *bodyB, b2JointT
 		rev_joint_def.localAnchorB = b2Vec2( PIXEL_TO_METERS(bodyB->width) * (anchor2.x), PIXEL_TO_METERS(bodyB->height) * (anchor2.y) );
 		rev_joint_def.maxMotorTorque = 500.0f;
 		if (direction == 1) {
-			rev_joint_def.lowerAngle = (M_PI / 2) + (M_PI / 4);
-			rev_joint_def.upperAngle = (M_PI) + (M_PI / 4);
+			rev_joint_def.lowerAngle = -(M_PI / 4) + (M_PI / 6);
+			rev_joint_def.upperAngle = (M_PI / 2) - (M_PI / 4) - (M_PI / 6);
 		}
 		else if (direction == -1) {
-			rev_joint_def.lowerAngle = -(M_PI / 4);
-			rev_joint_def.upperAngle = (M_PI / 4);
+			rev_joint_def.lowerAngle = -(M_PI / 4) + (M_PI / 6);
+			rev_joint_def.upperAngle = (M_PI / 4) - (M_PI / 6);
 		}
 		rev_joint_def.enableLimit = true;
 		rev_joint_def.enableMotor = true;
