@@ -90,7 +90,7 @@ bool ModuleRender::CleanUp()
 }
 
 // Blit to screen
-bool ModuleRender::Blit(SDL_Texture* texture, int x, int y, SDL_Rect* section, float speed, double angle, int pivot_x, int pivot_y )
+bool ModuleRender::Blit(SDL_Texture* texture, int x, int y, SDL_Rect* section, float speed, double angle, bool flip, int pivot_x, int pivot_y  )
 {
 	bool ret = true;
 	SDL_Rect rect;
@@ -119,11 +119,15 @@ bool ModuleRender::Blit(SDL_Texture* texture, int x, int y, SDL_Rect* section, f
 		pivot.y = pivot_y;
 		p = &pivot;
 	}
-
-	if(SDL_RenderCopyEx(renderer, texture, section, &rect, angle, p, SDL_FLIP_NONE) != 0)
+	
+	if(flip == false && SDL_RenderCopyEx(renderer, texture, section, &rect, angle, p, SDL_FLIP_NONE) != 0)
 	{
 		LOG("Cannot blit to screen. SDL_RenderCopy error: %s", SDL_GetError());
 		ret = false;
+	}
+	else if (flip == true)
+	{
+		SDL_RenderCopyEx(renderer, texture, section, &rect, angle, p, SDL_FLIP_HORIZONTAL);
 	}
 
 	return ret;

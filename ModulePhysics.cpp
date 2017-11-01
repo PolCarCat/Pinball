@@ -76,13 +76,15 @@ update_status ModulePhysics::PreUpdate()
 	return UPDATE_CONTINUE;
 }
 
-PhysBody* ModulePhysics::CreateCircle(int x, int y, int radius, bool dyn)
+PhysBody* ModulePhysics::CreateCircle(int x, int y, int radius, uint dyn)
 {
 	b2BodyDef body;
-	if (dyn == true)
+	if (dyn == 1)
 		body.type = b2_dynamicBody;
-	else
+	else if (dyn == 0)
 		body.type = b2_staticBody;
+	else if (dyn == 2)
+		body.type = b2_kinematicBody;
 
 	body.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
 
@@ -104,17 +106,21 @@ PhysBody* ModulePhysics::CreateCircle(int x, int y, int radius, bool dyn)
 	return pbody;
 }
 
-PhysBody* ModulePhysics::CreateRectangle(int x, int y, int width, int height, bool dyn, float angle)
+PhysBody* ModulePhysics::CreateRectangle(int x, int y, int width, int height, uint dyn, float angle)
 {
 	b2BodyDef body;
-	if (dyn)
+	if (dyn == 1)
 		body.type = b2_dynamicBody;
-	else body.type = b2_staticBody;
+	else if (dyn == 0)
+		body.type = b2_staticBody;
+	else if (dyn == 2)
+		body.type = b2_kinematicBody;
+
 	body.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
 
 	b2Body* b = world->CreateBody(&body);
 	if (angle != 0.0f)
-		b->SetTransform(b->GetPosition(), angle);
+		b->SetTransform(b->GetPosition(), 0.0174532925 * angle);
 
 	b2PolygonShape box;
 	box.SetAsBox(PIXEL_TO_METERS(width) * 0.5f, PIXEL_TO_METERS(height) * 0.5f);
@@ -142,7 +148,7 @@ PhysBody* ModulePhysics::CreateRectangleSensor(int x, int y, int width, int heig
 
 	b2Body* b = world->CreateBody(&body);
 	if (angle != 0.0f)
-		b->SetTransform(b->GetPosition(), angle);
+		b->SetTransform(b->GetPosition(), 0.0174532925 * angle);
 
 	b2PolygonShape box;
 	box.SetAsBox(PIXEL_TO_METERS(width) * 0.5f, PIXEL_TO_METERS(height) * 0.5f);
