@@ -33,6 +33,7 @@ public:
 	Animation Lights_anim;
 	Animation speedbooster;
 	Animation Squared_Bumper;
+	Animation Flipper;
 	float speedboosterleft, speedboosterright;
 	SDL_Texture* Sprites;
 	uint bonus_fx;

@@ -47,6 +47,8 @@ bool ModuleSceneIntro::Start()
 
 	Squared_Bumper.PushBack({ 0,0,0,0 });
 
+	Flipper.PushBack({ 49,0, 110 ,38 });
+
 
 	bonus_fx = App->audio->LoadFx("FX/bonus.wav");
 	lights_fx = App->audio->LoadFx("FX/bonus 2.wav");
@@ -315,6 +317,8 @@ update_status ModuleSceneIntro::Update()
 		((b2RevoluteJoint*)Right_flipper->joint)->SetMotorSpeed(-((b2RevoluteJoint*)Right_flipper->joint)->GetMotorSpeed());
 	}
 
+	//Blit
+
 	for (p2List_item<PhysBody*>* new_obj = Bumpers.getFirst(); new_obj != NULL; new_obj = new_obj->next)
 	{
 		iPoint bumper_pos;
@@ -350,6 +354,15 @@ update_status ModuleSceneIntro::Update()
 
 	App->renderer->Blit(Sprites, ball_pos.x, ball_pos.y, &Ball->anim.GetCurrentFrame().rect);
 
+	iPoint left_flipperpos;
+	Left_flipper->body2->GetPosition(leftspeed_pos.x, leftspeed_pos.y);
+
+	App->renderer->Blit(Sprites, leftspeed_pos.x + 45, leftspeed_pos.y, &Flipper.GetCurrentFrame().rect, 1.0f, Left_flipper->body2->body->GetAngle() * 57.2957795);
+
+	iPoint right_flipperpos;
+	Right_flipper->body2->GetPosition(rightspeed_pos.x, rightspeed_pos.y);
+
+	App->renderer->Blit(Sprites, rightspeed_pos.x +45, rightspeed_pos.y, &Flipper.GetCurrentFrame().rect, 1.0f, Right_flipper->body2->body->GetAngle() * 57.2957795,true);
 
 	if(App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
 	{
