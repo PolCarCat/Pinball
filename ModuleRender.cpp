@@ -216,5 +216,6 @@ void ModuleRender::CameraFollow(iPoint p) {
 	//int delta_x = -(p.x - SCREEN_WIDTH / 2) + camera.x;
 	int delta_y = (p.y - SCREEN_HEIGHT / 2) - camera.y;
 	//camera.x = REDUCE_TO(camera.x, -p.x + SCREEN_WIDTH / 2, delta_x / 2);
-	camera.y = REDUCE_TO(camera.y, -p.y + SCREEN_HEIGHT / 2, 10);
+	//camera.y = REDUCE_TO(camera.y, -p.y + SCREEN_HEIGHT / 2, 10);
+	camera.y = -p.y + SCREEN_HEIGHT / 2;
 }
