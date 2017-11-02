@@ -288,11 +288,14 @@ bool ModuleSceneIntro::Start()
 	aux_obj->listener = this;
 	Lights.add(aux_obj);
 
-	lifes = 3;
+	lives = 3;
 
 	font = App->fonts->LoadFont();
 
 	App->interfaces->AddLabel(font, "Score", SCREEN_WIDTH/2, SCREEN_HEIGHT/2);
+	
+	App->interfaces->AddLabel(font, "Score", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
+
 
 	return ret;
 }
@@ -323,11 +326,11 @@ void ModuleSceneIntro::Reset() {
 		bumper->data->Reset();
 	}
 
-	lifes--;
-	if (lifes == 0)
+	lives--;
+	if (lives == 0)
 	{
-		puntuatuion = 0;
-		lifes = 3;
+		score = 0;
+		lives = 3;
 	}
 }
 
@@ -451,24 +454,24 @@ void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 		b2Vec2 speed_vec = bodyA->body->GetLinearVelocity();
 		if (bodyB->body_type == BUMPER)
 		{
-			App->audio->PlayFx(bonus_fx);						
+			App->audio->PlayFx(bonus_fx);
 			bodyB->anim.speed = 1;
-			puntuatuion += 200;
+			score += 200;
 		}
 		else if (bodyB->body_type == LIGHTS)
 		{
 			bodyB->anim.speed = 1;
 			App->audio->PlayFx(lights_fx);
-			puntuatuion += 20;
+			score += 20;
 		}
 		else if (bodyB->body_type == SPEED_BOOSTER)
 		{
 			bodyA->body->ApplyLinearImpulse({ speed_vec.x * 1.5f , speed_vec.y * 1.5f  }, { 0,0 }, false);
-			puntuatuion += 100;
+			score += 100;
 		}
 		else if (bodyB->body_type == SQUARED_BUMPER)
 		{
-			puntuatuion += 100;
+			score += 100;
 			App->audio->PlayFx(bounce_fx);
 		}
 		else if (bodyB->body_type == END)
