@@ -9,7 +9,7 @@
 
 ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
-	ray_on = false;
+
 	sensed = false;
 }
 
@@ -161,6 +161,7 @@ bool ModuleSceneIntro::Start()
 
 	aux_obj = new PhysBody();
 	aux_obj = App->physics->CreateRectangle(161, 925, 150, 10 , false, 73);
+	aux_obj->initial_rotation = 73;
 	aux_obj->body_type = BUMPER;
 	aux_obj->anim = Squared_Bumper;
 	aux_obj->listener = this;
@@ -169,6 +170,7 @@ bool ModuleSceneIntro::Start()
 
 	aux_obj = new PhysBody();
 	aux_obj = App->physics->CreateRectangle(438, 925, 150, 10, false,  108);
+	aux_obj->initial_rotation = 108;
 	aux_obj->body_type = BUMPER;
 	aux_obj->anim = Squared_Bumper;
 	aux_obj->listener = this;
@@ -279,6 +281,16 @@ bool ModuleSceneIntro::Start()
 	return ret;
 }
 
+update_status ModuleSceneIntro::PostUpdate()
+{
+	if (sensed == true)
+	{
+		Reset();
+		sensed = false;
+	}
+	return UPDATE_CONTINUE;
+}
+
 void ModuleSceneIntro::Reset() {
 	Ball->Reset();
 	launcher_joint->body1->Reset();
@@ -305,15 +317,12 @@ bool ModuleSceneIntro::CleanUp()
 // Update: draw background
 update_status ModuleSceneIntro::Update()
 {
-	App->renderer->Blit(background, 0, 0);
 
+
+	// Keyboard Inputs 
 
 	if(App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 	{
-		/*ray_on = !ray_on;
-		ray.x = App->input->GetMouseX();
-		ray.y = App->input->GetMouseY();*/
-
 		((b2PrismaticJoint*)launcher_joint->joint)->EnableMotor(true);
 	}
 
@@ -345,7 +354,11 @@ update_status ModuleSceneIntro::Update()
 		Reset();
 	}
 
-	//Blit
+	//Blit All ----
+
+	App->renderer->Blit(background, 0, 0);
+
+
 	for (p2List_item<PhysBody*>* new_obj = Bumpers.getFirst(); new_obj != NULL; new_obj = new_obj->next)
 	{
 		iPoint bumper_pos;
@@ -391,46 +404,9 @@ update_status ModuleSceneIntro::Update()
 
 	App->renderer->Blit(Sprites, rightspeed_pos.x +45, rightspeed_pos.y, &Flipper.GetCurrentFrame().rect, 1.0f, Right_flipper->body2->body->GetAngle() * 57.2957795,true);
 
-	if(App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
-	{
-		
-	}
 
-	if(App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
-	{
-		
-	}
 
-	// Prepare for raycast ------------------------------------------------------
 	
-	iPoint mouse;
-	mouse.x = App->input->GetMouseX();
-	mouse.y = App->input->GetMouseY();
-	int ray_hit = ray.DistanceTo(mouse);
-
-	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
-	{
-
-		App->physics->CreateCircle(mouse.x, mouse.y, 15, true);
-
-	}
-	fVector normal(0.0f, 0.0f);
-
-	// All draw functions ------------------------------------------------------
-	
-
-	// ray -----------------
-	if(ray_on == true)
-	{
-		fVector destination(mouse.x-ray.x, mouse.y-ray.y);
-		destination.Normalize();
-		destination *= ray_hit;
-
-		App->renderer->DrawLine(ray.x, ray.y, ray.x + destination.x, ray.y + destination.y, 255, 255, 255);
-
-		if(normal.x != 0.0f)
-			App->renderer->DrawLine(ray.x + destination.x, ray.y + destination.y, ray.x + destination.x + normal.x * 25.0f, ray.y + destination.y + normal.y * 25.0f, 100, 255, 100);
-	}
 
 	return UPDATE_CONTINUE;
 }
@@ -453,10 +429,7 @@ void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 		b2Vec2 speed_vec = bodyA->body->GetLinearVelocity();
 		if (bodyB->body_type == BUMPER)
 		{
-			App->audio->PlayFx(bonus_fx);			
-			/*b2Vec2 Normal_vec = { bodyA->body->GetPosition().x + bodyA->width / 2 - bodyB->body->GetPosition().x + bodyB->width / 2, bodyA->body->GetPosition().y + bodyA->height / 2 - bodyB->body->GetPosition().y + bodyB->height / 2 };
-			bodyA->body->ApplyLinearImpulse({ speed_vec.x * 1.5f, speed_vec.y *1.5f }, { 0,0 }, false);*/
-			
+			App->audio->PlayFx(bonus_fx);						
 			bodyB->anim.speed = 1;
 		}
 		else if (bodyB->body_type == LIGHTS)
@@ -470,7 +443,7 @@ void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 		}
 		else if (bodyB->body_type == END)
 		{
-			//bodyA->body->SetTransform({ 600, 1140 },bodyA->body->GetAngle());
+			sensed = true;
 			
 		}
 	}

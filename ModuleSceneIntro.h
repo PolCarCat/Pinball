@@ -17,17 +17,29 @@ public:
 
 	bool Start();
 	update_status Update();
+	update_status PostUpdate();
 	bool CleanUp();
 	void Reset();
 	void OnCollision(PhysBody* bodyA, PhysBody* bodyB);
 
-public:
 
+private:
+
+	uint bonus_fx;
+	uint lights_fx;
+
+	p2List<PhysBody*> Bumpers;
+	p2List<PhysBody*> SpeedBoosters;
+	p2List<PhysBody*> Lights;
+	p2List<PhysBody*> Squared_bumpers;
+	PhysJoint* launcher_joint, *Left_flipper, *Right_flipper;
+	PhysBody* Ball, *Chain, *Rare_thing_left, *Rare_thing_right, *Curve_left, *Curve_right, *Center_chain, *Left_bumper_chain, *Right_bumper_chain;
 
 	PhysBody* end_game_sensor;
 	bool sensed;
-
 	SDL_Texture* background;
+	float speedboosterleft, speedboosterright;
+	SDL_Texture* Sprites;
 	Animation Bumper;
 	Animation Ball_anim;
 	Animation Speed_booster;
@@ -35,19 +47,6 @@ public:
 	Animation speedbooster;
 	Animation Squared_Bumper;
 	Animation Flipper;
-	float speedboosterleft, speedboosterright;
-	SDL_Texture* Sprites;
-	uint bonus_fx;
-	uint lights_fx;
-	p2Point<int> ray;
-	bool ray_on;
-private:
-	p2List<PhysBody*> Bumpers;
-	p2List<PhysBody*> SpeedBoosters;
-	p2List<PhysBody*> Lights;
-	p2List<PhysBody*> Squared_bumpers;
-	PhysJoint* launcher_joint, *Left_flipper, *Right_flipper;
-	PhysBody* Ball, *Chain, *Rare_thing_left, *Rare_thing_right, *Curve_left, *Curve_right, *Center_chain, *Left_bumper_chain, *Right_bumper_chain;
 
 	int structure_chain[126] = {
 		578, 1070,
