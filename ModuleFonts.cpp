@@ -172,7 +172,7 @@ void ModuleFonts::BlitText(Label* label) const
 			posX = label->pos.x + col * rect.w;
 			break;
 		}
-		App->renderer->Blit(font->graphic, posX, label->pos.y + row * (rect.h + 1), &rect, 0.0f, 0.0f, false);
+		App->renderer->Blit(font->graphic, posX, label->pos.y + row * (rect.h + 1), &rect, 1.0f, 0.0f, false);
 	}
 }
 
