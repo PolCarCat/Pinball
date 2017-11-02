@@ -294,6 +294,7 @@ bool ModuleSceneIntro::Start()
 
 
 	App->interfaces->AddLabel(font, "Score", 60, 1200);
+	App->interfaces->AddLabel(font, "Lives", 60, 1230);
 
 
 	return ret;
