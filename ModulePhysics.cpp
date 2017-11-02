@@ -446,7 +446,7 @@ int PhysBody::RayCast(int x1, int y1, int x2, int y2, float& normal_x, float& no
 }
 
 void PhysBody::Reset() {
-	SetTransform(initial_pos);
+	SetTransform(initial_pos, initial_rotation);
 	body->SetAngularVelocity(0.0f);
 	body->SetLinearVelocity(b2Vec2_zero);
 	anim.speed = 0.0f;
