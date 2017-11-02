@@ -292,7 +292,7 @@ bool ModuleSceneIntro::Start()
 
 	font = App->fonts->LoadFont();
 
-	App->interfaces->AddLabel(font, "Score", SCREEN_WIDTH/2, SCREEN_HEIGHT/2);
+	App->interfaces->AddLabel(font, "Score", 70, 1200);
 
 	return ret;
 }
