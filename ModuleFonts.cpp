@@ -172,11 +172,11 @@ void ModuleFonts::BlitText(Label* label) const
 			posX = label->pos.x + col * rect.w;
 			break;
 		}
-		App->renderer->Blit(font->graphic, posX, label->pos.y + row * (rect.h + 1), &rect, 0.0f, 0.0f, false, false );
+		App->renderer->Blit(font->graphic, posX, label->pos.y + row * (rect.h + 1), &rect, 0.0f, 0.0f, false);
 	}
 }
 
-int ModuleFonts::LoadWhiteFont() {
+int ModuleFonts::LoadFont() {
 	return App->fonts->Load("Images/Fuentes_small_grey.png",
 		"0123456789ABCDEF\1\1\1\1\1\1\1\1\1\1\1\1\1\1\1\1           K;®.,0123456789=      ABCDEFGHIJKLMNOPQRSTUVWXYZ.\1\1   abcdefghijklmnopqrstuvwxyz    |                                ",
 		5, 0, 1);

@@ -290,7 +290,7 @@ bool ModuleSceneIntro::Start()
 
 	lifes = 3;
 
-	font = App->fonts->Load("Sprites/Fuentes_small.png", "0123456789ABCDEF\1\1\1\1\1\1\1\1\1\1\1\1\1\1\1\1           K;�.,0123456789=      ABCDEFGHIJKLMNOPQRSTUVWXYZ.\1\1   abcdefghijklmnopqrstuvwxyz    |                                ", 5, 0, 1);
+	font = App->fonts->LoadFont();
 
 	App->interfaces->AddLabel(font, "Score", SCREEN_WIDTH/2, SCREEN_HEIGHT/2);
 
@@ -428,7 +428,7 @@ update_status ModuleSceneIntro::Update()
 	iPoint right_flipperpos;
 	Right_flipper->body2->GetPosition(rightspeed_pos.x, rightspeed_pos.y);
 
-	App->renderer->Blit(Sprites, rightspeed_pos.x +45, rightspeed_pos.y, &Flipper.GetCurrentFrame().rect, 1.0f, Right_flipper->body2->body->GetAngle() * 57.2957795,true);
+	App->renderer->Blit(Sprites, rightspeed_pos.x +45, rightspeed_pos.y, &Flipper.GetCurrentFrame().rect, 1.0f, Right_flipper->body2->body->GetAngle() * 57.2957795, true);
 
 	return UPDATE_CONTINUE;
 }
