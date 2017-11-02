@@ -31,9 +31,11 @@ int ModuleFonts::Load(const char* texture_path, const char* characters, uint row
 		return id;
 	}
 
-	for (int i = 0; i < MAX_FONTS; i++) 
+	for (int i = 0; i < MAX_FONTS; i++)
+	{
 		if (fonts[i].path == texture_path)
 			return i;
+	}
 
 	SDL_Texture* tex = App->textures->Load(texture_path);
 

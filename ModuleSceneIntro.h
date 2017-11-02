@@ -23,7 +23,10 @@ public:
 	void OnCollision(PhysBody* bodyA, PhysBody* bodyB);
 
 	int puntuatuion;
+	char* puntuation_char;
 	int lifes;
+	char* lifes_char;
+	int font;
 
 
 private:

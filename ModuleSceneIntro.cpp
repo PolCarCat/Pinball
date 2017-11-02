@@ -1,3 +1,4 @@
+﻿#include <stdio.h>
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleRender.h"
@@ -6,6 +7,9 @@
 #include "ModuleTextures.h"
 #include "ModuleAudio.h"
 #include "ModulePhysics.h"
+#include "ModuleFonts.h"
+#include "ModuleInterface.h"
+
 
 ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -52,7 +56,7 @@ bool ModuleSceneIntro::Start()
 
 	bonus_fx = App->audio->LoadFx("FX/bonus.wav");
 	lights_fx = App->audio->LoadFx("FX/bonus 2.wav", 16);
-	bounce_fx = App->audio->LoadFx("FX/Bounce.wav", 16);
+	bounce_fx = App->audio->LoadFx("FX/Bounce.wav", 32);
 	Sprites = App->textures->Load("Sprites/Sprite sheet.png");
 
 	end_game_sensor = App->physics->CreateRectangleSensor(SCREEN_WIDTH / 2, 1200, SCREEN_WIDTH, 50);
@@ -286,6 +290,10 @@ bool ModuleSceneIntro::Start()
 
 	lifes = 3;
 
+	font = App->fonts->Load("Sprites/Fuentes_small.png", "0123456789ABCDEF\1\1\1\1\1\1\1\1\1\1\1\1\1\1\1\1           K;�.,0123456789=      ABCDEFGHIJKLMNOPQRSTUVWXYZ.\1\1   abcdefghijklmnopqrstuvwxyz    |                                ", 5, 0, 1);
+
+	App->interfaces->AddLabel(font, "Score", SCREEN_WIDTH/2, SCREEN_HEIGHT/2);
+
 	return ret;
 }
 
@@ -334,7 +342,8 @@ bool ModuleSceneIntro::CleanUp()
 // Update: draw background
 update_status ModuleSceneIntro::Update()
 {
-
+	
+	//sprintf_s(puntuation_char, 10, "%7d", puntuatuion);
 
 	// Keyboard Inputs 
 
