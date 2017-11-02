@@ -51,7 +51,7 @@ bool ModuleSceneIntro::Start()
 
 
 	bonus_fx = App->audio->LoadFx("FX/bonus.wav");
-	lights_fx = App->audio->LoadFx("FX/bonus 2.wav");
+	lights_fx = App->audio->LoadFx("FX/bonus 2.wav", 16);
 	Sprites = App->textures->Load("Sprites/Sprite sheet.png");
 
 	end_game_sensor = App->physics->CreateRectangleSensor(SCREEN_WIDTH / 2, 1200, SCREEN_WIDTH, 50);
@@ -78,15 +78,15 @@ bool ModuleSceneIntro::Start()
 	// Flippers 
 
 	PhysBody *static_part = App->physics->CreateCircle(180, 1090, 10);
-	PhysBody *dynamic_part = App->physics->CreateRectangle(170, 1090, 100, 10, true);
+	PhysBody *dynamic_part = App->physics->CreateRectangle(170, 1090, 100, 15, true);
 
-	Left_flipper = App->physics->CreateJoint(static_part, dynamic_part, e_revoluteJoint, 0.0f, 100.0f, false, b2Vec2_zero, b2Vec2(0.0f, 0.0f), b2Vec2(-0.5f, 0.0f));
+	Left_flipper = App->physics->CreateJoint(static_part, dynamic_part, e_revoluteJoint, 0.0f, 100.0f, false, b2Vec2_zero, b2Vec2(0.0f, 0.0f), b2Vec2(-0.5f, 0.1f));
 
 
 	static_part = App->physics->CreateCircle(415, 1090, 10);
-	dynamic_part = App->physics->CreateRectangle(405, 1095, 100, 10, true);
+	dynamic_part = App->physics->CreateRectangle(405, 1095, 100, 15, true);
 
-	Right_flipper = App->physics->CreateJoint(static_part, dynamic_part, e_revoluteJoint, 0.0f, -100.0f, false, b2Vec2_zero, b2Vec2(0.0f, 0.0f), b2Vec2(+0.5f, 0.0f));
+	Right_flipper = App->physics->CreateJoint(static_part, dynamic_part, e_revoluteJoint, 0.0f, -100.0f, false, b2Vec2_zero, b2Vec2(0.0f, 0.0f), b2Vec2(+0.5f, 0.1f));
 
 
 	//Upper part sticks

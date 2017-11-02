@@ -126,7 +126,7 @@ bool ModuleAudio::PlayMusic(const char* path, float fade_time)
 }
 
 // Load WAV
-unsigned int ModuleAudio::LoadFx(const char* path)
+unsigned int ModuleAudio::LoadFx(const char* path, int volume)
 {
 	if(IsEnabled() == false)
 		return 0;
@@ -141,6 +141,7 @@ unsigned int ModuleAudio::LoadFx(const char* path)
 	}
 	else
 	{
+		Mix_VolumeChunk(chunk, volume);
 		fx.add(chunk);
 		ret = fx.count();
 	}
