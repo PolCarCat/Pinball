@@ -22,10 +22,10 @@ public:
 	void Reset();
 	void OnCollision(PhysBody* bodyA, PhysBody* bodyB);
 
-	int puntuatuion;
-	char* puntuation_char;
-	int lifes;
-	char* lifes_char;
+	int score;
+	char* score_char;
+	int lives;
+	char* lives_char;
 	int font;
 
 
