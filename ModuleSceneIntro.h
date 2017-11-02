@@ -30,6 +30,7 @@ private:
 
 	uint bonus_fx;
 	uint lights_fx;
+	uint bounce_fx;
 
 	p2List<PhysBody*> Bumpers;
 	p2List<PhysBody*> SpeedBoosters;

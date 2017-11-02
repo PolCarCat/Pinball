@@ -52,6 +52,7 @@ bool ModuleSceneIntro::Start()
 
 	bonus_fx = App->audio->LoadFx("FX/bonus.wav");
 	lights_fx = App->audio->LoadFx("FX/bonus 2.wav", 16);
+	bounce_fx = App->audio->LoadFx("FX/Bounce.wav", 16);
 	Sprites = App->textures->Load("Sprites/Sprite sheet.png");
 
 	end_game_sensor = App->physics->CreateRectangleSensor(SCREEN_WIDTH / 2, 1200, SCREEN_WIDTH, 50);
@@ -463,6 +464,7 @@ void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 		else if (bodyB->body_type == SQUARED_BUMPER)
 		{
 			puntuatuion += 100;
+			App->audio->PlayFx(bounce_fx);
 		}
 		else if (bodyB->body_type == END)
 		{
