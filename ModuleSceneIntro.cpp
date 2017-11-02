@@ -69,17 +69,22 @@ bool ModuleSceneIntro::Start()
 	Right_bumper_chain = App->physics->CreateChain(0, 0, right_bumper_chain, 18);
 
 
+	// Launcher Joint
+
 	PhysBody *a = App->physics->CreateRectangle(610, 1155, 1, 1);
 	PhysBody *b = App->physics->CreateRectangle(610, 1190, 20, 10, true);
 	launcher_joint = App->physics->CreateJoint(a, b, e_prismaticJoint, 40.0f, -80.0f, false);
 
-	PhysBody *static_part = App->physics->CreateCircle(190, 1090, 20);
-	PhysBody *dynamic_part = App->physics->CreateRectangle(180, 1090, 100, 20, true);
+	// Flippers 
+
+	PhysBody *static_part = App->physics->CreateCircle(180, 1090, 10);
+	PhysBody *dynamic_part = App->physics->CreateRectangle(170, 1090, 100, 10, true);
 
 	Left_flipper = App->physics->CreateJoint(static_part, dynamic_part, e_revoluteJoint, 0.0f, 100.0f, false, b2Vec2_zero, b2Vec2(0.0f, 0.0f), b2Vec2(-0.5f, 0.0f));
 
-	static_part = App->physics->CreateCircle(408, 1090, 20);
-	dynamic_part = App->physics->CreateRectangle(408-10, 1095, 100, 20, true);
+
+	static_part = App->physics->CreateCircle(415, 1090, 10);
+	dynamic_part = App->physics->CreateRectangle(405, 1095, 100, 10, true);
 
 	Right_flipper = App->physics->CreateJoint(static_part, dynamic_part, e_revoluteJoint, 0.0f, -100.0f, false, b2Vec2_zero, b2Vec2(0.0f, 0.0f), b2Vec2(+0.5f, 0.0f));
 
