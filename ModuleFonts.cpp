@@ -177,9 +177,9 @@ void ModuleFonts::BlitText(Label* label) const
 }
 
 int ModuleFonts::LoadFont() {
-	return App->fonts->Load("Images/Fuentes_small_grey.png",
+	return App->fonts->Load("Sprites/Fuentes_small.png",
 		"0123456789ABCDEF\1\1\1\1\1\1\1\1\1\1\1\1\1\1\1\1           K;®.,0123456789=      ABCDEFGHIJKLMNOPQRSTUVWXYZ.\1\1   abcdefghijklmnopqrstuvwxyz    |                                ",
-		5, 0, 1);
+		5, 0, 2);
 }
 
 iPoint ModuleFonts::getFontDimensions(int id) {
