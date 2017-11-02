@@ -22,6 +22,9 @@ public:
 	void Reset();
 	void OnCollision(PhysBody* bodyA, PhysBody* bodyB);
 
+	int puntuatuion;
+	int lifes;
+
 
 private:
 
