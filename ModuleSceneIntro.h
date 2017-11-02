@@ -28,8 +28,8 @@ public:
 	char* lives_char;
 	int font;
 
-
 private:
+	int score_label = -1, lives_label = -1;
 
 	uint bonus_fx;
 	uint lights_fx;

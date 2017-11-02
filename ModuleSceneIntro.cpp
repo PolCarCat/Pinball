@@ -293,8 +293,14 @@ bool ModuleSceneIntro::Start()
 	font = App->fonts->LoadFont();
 
 	App->interfaces->AddLabel(font, "Score", SCREEN_WIDTH/2, SCREEN_HEIGHT/2);
-	
-	App->interfaces->AddLabel(font, "Score", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
+	score_char = (char*)calloc(8, sizeof(char));
+	sprintf_s(score_char, 8, "%7d", score);
+	score_label = App->interfaces->AddLabel(font, score_char, SCREEN_WIDTH / 2 + 100, SCREEN_HEIGHT / 2);
+
+	App->interfaces->AddLabel(font, "Lives", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
+	lives_char = (char*)calloc(8, sizeof(char));
+	sprintf_s(lives_char, 8, "%7d", lives);
+	lives_label = App->interfaces->AddLabel(font, lives_char, SCREEN_WIDTH / 2 + 100, SCREEN_HEIGHT / 2);
 
 
 	return ret;
@@ -305,8 +311,6 @@ update_status ModuleSceneIntro::PostUpdate()
 	if (sensed == true)
 	{
 		Reset();
-
-	
 		sensed = false;
 	}
 	return UPDATE_CONTINUE;
@@ -346,7 +350,10 @@ bool ModuleSceneIntro::CleanUp()
 update_status ModuleSceneIntro::Update()
 {
 	
-	//sprintf_s(puntuation_char, 10, "%7d", puntuatuion);
+	sprintf_s(score_char, 8, "%7d", score);
+	sprintf_s(lives_char, 8, "%7d", lives);
+	App->interfaces->getLabel(score_label)->setString(score_char);
+	App->interfaces->getLabel(lives_label)->setString(lives_char);
 
 	// Keyboard Inputs 
 
