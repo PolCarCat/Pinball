@@ -430,10 +430,6 @@ update_status ModuleSceneIntro::Update()
 
 	App->renderer->Blit(Sprites, rightspeed_pos.x +45, rightspeed_pos.y, &Flipper.GetCurrentFrame().rect, 1.0f, Right_flipper->body2->body->GetAngle() * 57.2957795,true);
 
-
-
-	
-
 	return UPDATE_CONTINUE;
 }
 

@@ -107,8 +107,8 @@ bool ModuleRender::Blit(SDL_Texture* texture, int x, int y, SDL_Rect* section, f
 		SDL_QueryTexture(texture, NULL, NULL, &rect.w, &rect.h);
 	}
 
-	rect.w *= SCREEN_SIZE;
-	rect.h *= SCREEN_SIZE;
+	rect.w *= SCREEN_SIZE;// * (use_camera ? 1 : FONT_SCALING);
+	rect.h *= SCREEN_SIZE;// * (use_camera ? 1 : FONT_SCALING);
 
 	SDL_Point* p = NULL;
 	SDL_Point pivot;
