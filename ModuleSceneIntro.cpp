@@ -143,7 +143,7 @@ bool ModuleSceneIntro::Start()
 	Bumpers.add(aux_obj);
 
 	//Ball
-	Ball = App->physics->CreateCircle(600, 1140, 15,true);
+	Ball = App->physics->CreateCircle(610, 1100, 15,true);
 	Ball->body_type = BALL;
 	Ball->anim = Ball_anim;
 	Ball->listener = this;
@@ -292,15 +292,16 @@ bool ModuleSceneIntro::Start()
 
 	font = App->fonts->LoadFont();
 
-	App->interfaces->AddLabel(font, "Score", SCREEN_WIDTH/2, SCREEN_HEIGHT/2);
+	App->interfaces->AddLabel(font, "Score", 60, 1185);
+	App->interfaces->AddLabel(font, "Lives", 60, 1215 + 32);
+
 	score_char = (char*)calloc(8, sizeof(char));
 	sprintf_s(score_char, 8, "%7d", score);
-	score_label = App->interfaces->AddLabel(font, score_char, SCREEN_WIDTH / 2 + 100, SCREEN_HEIGHT / 2);
+	score_label = App->interfaces->AddLabel(font, score_char, 60 + 20, 1185 + 24);
 
-	App->interfaces->AddLabel(font, "Lives", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
 	lives_char = (char*)calloc(8, sizeof(char));
 	sprintf_s(lives_char, 8, "%7d", lives);
-	lives_label = App->interfaces->AddLabel(font, lives_char, SCREEN_WIDTH / 2 + 100, SCREEN_HEIGHT / 2);
+	lives_label = App->interfaces->AddLabel(font, lives_char, 60 + 10, 1215 + 48);
 
 
 	return ret;
