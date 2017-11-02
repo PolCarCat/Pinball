@@ -31,7 +31,6 @@ Application::Application()
 	// Main Modules
 	AddModule(window);
 	AddModule(physics);
-	AddModule(renderer);
 	AddModule(textures);
 	AddModule(input);
 	AddModule(audio);
@@ -41,6 +40,8 @@ Application::Application()
 	// Scenes
 	AddModule(scene_intro);
 	
+	// Renderer
+	AddModule(renderer);
 
 }
 
