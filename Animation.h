@@ -60,8 +60,6 @@ public:
 	{
 		current_frame = 0.0f;
 		loops = 0;
-		if (speed == 0.0f)
-			speed = 0.15f;
 	}
 
 	int getFrameIndex() const

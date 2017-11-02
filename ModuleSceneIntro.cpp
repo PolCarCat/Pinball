@@ -71,14 +71,14 @@ bool ModuleSceneIntro::Start()
 
 	PhysBody *a = App->physics->CreateRectangle(610, 1155, 1, 1);
 	PhysBody *b = App->physics->CreateRectangle(610, 1190, 20, 10, true);
-	launcher_joint = App->physics->CreateJoint(a, b, e_prismaticJoint, 40.0f, -60.0f, false);
+	launcher_joint = App->physics->CreateJoint(a, b, e_prismaticJoint, 40.0f, -80.0f, false);
 
-	PhysBody *static_part = App->physics->CreateCircle(190, 1090, 25);
+	PhysBody *static_part = App->physics->CreateCircle(190, 1090, 20);
 	PhysBody *dynamic_part = App->physics->CreateRectangle(180, 1090, 100, 20, true);
 
 	Left_flipper = App->physics->CreateJoint(static_part, dynamic_part, e_revoluteJoint, 0.0f, 100.0f, false, b2Vec2_zero, b2Vec2(0.0f, 0.0f), b2Vec2(-0.5f, 0.0f));
 
-	static_part = App->physics->CreateCircle(408, 1090, 25);
+	static_part = App->physics->CreateCircle(408, 1090, 20);
 	dynamic_part = App->physics->CreateRectangle(408-10, 1095, 100, 20, true);
 
 	Right_flipper = App->physics->CreateJoint(static_part, dynamic_part, e_revoluteJoint, 0.0f, -100.0f, false, b2Vec2_zero, b2Vec2(0.0f, 0.0f), b2Vec2(+0.5f, 0.0f));
@@ -97,13 +97,14 @@ bool ModuleSceneIntro::Start()
 	App->physics->CreateRectangle(482, 1038, 5, 126, false, 58.0f);
 
 
-	
+	float restitution = 1.3f;
 	//Circle Bumpers
 	PhysBody* aux_obj = new PhysBody();
 	aux_obj = App->physics->CreateCircle(262+ 35, 394 + 35, 30, false);
 	aux_obj->body_type = BUMPER;
 	aux_obj->anim = Bumper;
 	aux_obj->listener = this;
+	aux_obj->body->GetFixtureList()->SetRestitution(restitution);
 	Bumpers.add(aux_obj);
 
 
@@ -112,6 +113,7 @@ bool ModuleSceneIntro::Start()
 	aux_obj->body_type = BUMPER;
 	aux_obj->anim = Bumper;
 	aux_obj->listener = this;
+	aux_obj->body->GetFixtureList()->SetRestitution(restitution);
 	Bumpers.add(aux_obj);
 
 	aux_obj = new PhysBody();
@@ -119,6 +121,7 @@ bool ModuleSceneIntro::Start()
 	aux_obj->body_type = BUMPER;
 	aux_obj->anim = Bumper;
 	aux_obj->listener = this;
+	aux_obj->body->GetFixtureList()->SetRestitution(restitution);
 	Bumpers.add(aux_obj);
 
 	aux_obj = new PhysBody();
@@ -126,6 +129,7 @@ bool ModuleSceneIntro::Start()
 	aux_obj->body_type = BUMPER;
 	aux_obj->anim = Bumper;
 	aux_obj->listener = this;
+	aux_obj->body->GetFixtureList()->SetRestitution(restitution);
 	Bumpers.add(aux_obj);
 
 	//Ball
@@ -160,6 +164,7 @@ bool ModuleSceneIntro::Start()
 	aux_obj->body_type = BUMPER;
 	aux_obj->anim = Squared_Bumper;
 	aux_obj->listener = this;
+	aux_obj->body->GetFixtureList()->SetRestitution(restitution);
 	Bumpers.add(aux_obj);
 
 	aux_obj = new PhysBody();
@@ -167,6 +172,7 @@ bool ModuleSceneIntro::Start()
 	aux_obj->body_type = BUMPER;
 	aux_obj->anim = Squared_Bumper;
 	aux_obj->listener = this;
+	aux_obj->body->GetFixtureList()->SetRestitution(restitution);
 	Bumpers.add(aux_obj);
 
 	//Lights
@@ -276,6 +282,16 @@ bool ModuleSceneIntro::Start()
 void ModuleSceneIntro::Reset() {
 	Ball->Reset();
 	launcher_joint->body1->Reset();
+
+	p2List_item<PhysBody*>* light;
+	for (light = Lights.getFirst(); light != nullptr; light = light->next) {
+		light->data->Reset();
+	}
+
+	p2List_item<PhysBody*>* bumper;
+	for (bumper = Bumpers.getFirst(); bumper != nullptr; bumper = bumper->next) {
+		bumper->data->Reset();
+	}
 }
 
 // Load assets
@@ -438,8 +454,8 @@ void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 		if (bodyB->body_type == BUMPER)
 		{
 			App->audio->PlayFx(bonus_fx);			
-			b2Vec2 Normal_vec = { bodyA->body->GetPosition().x + bodyA->width / 2 - bodyB->body->GetPosition().x + bodyB->width / 2, bodyA->body->GetPosition().y + bodyA->height / 2 - bodyB->body->GetPosition().y + bodyB->height / 2 };
-			bodyA->body->ApplyLinearImpulse({ speed_vec.x * 1.5f, speed_vec.y *1.5f }, { 0,0 }, false);
+			/*b2Vec2 Normal_vec = { bodyA->body->GetPosition().x + bodyA->width / 2 - bodyB->body->GetPosition().x + bodyB->width / 2, bodyA->body->GetPosition().y + bodyA->height / 2 - bodyB->body->GetPosition().y + bodyB->height / 2 };
+			bodyA->body->ApplyLinearImpulse({ speed_vec.x * 1.5f, speed_vec.y *1.5f }, { 0,0 }, false);*/
 			
 			bodyB->anim.speed = 1;
 		}

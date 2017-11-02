@@ -386,8 +386,8 @@ void PhysBody::GetPosition(int& x, int &y) const
 	y = METERS_TO_PIXELS(pos.y) - (height);
 }
 
-void PhysBody::SetPosition(b2Vec2 pos) {
-	body->SetTransform(pos, 0.0f);
+void PhysBody::SetTransform(b2Vec2 pos, float angle) {
+	body->SetTransform(pos, angle);
 }
 
 float PhysBody::GetRotation() const
@@ -446,9 +446,11 @@ int PhysBody::RayCast(int x1, int y1, int x2, int y2, float& normal_x, float& no
 }
 
 void PhysBody::Reset() {
-	SetPosition(initial_pos);
+	SetTransform(initial_pos);
 	body->SetAngularVelocity(0.0f);
 	body->SetLinearVelocity(b2Vec2_zero);
+	anim.speed = 0.0f;
+	anim.Reset();
 }
 
 void ModulePhysics::BeginContact(b2Contact* contact)

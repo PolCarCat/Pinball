@@ -33,7 +33,7 @@ public:
 	{}
 
 	void GetPosition(int& x, int &y) const;
-	void SetPosition(b2Vec2 pos);
+	void SetTransform(b2Vec2 pos, float angle = 0.0f);
 	float GetRotation() const;
 	bool Contains(int x, int y) const;
 	int RayCast(int x1, int y1, int x2, int y2, float& normal_x, float& normal_y) const;
@@ -46,6 +46,7 @@ public:
 	Body_type body_type;
 	Animation anim;
 	b2Vec2 initial_pos;
+	float initial_rotation;
 };
 
 
