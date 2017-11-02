@@ -37,8 +37,8 @@ bool ModuleSceneIntro::Start()
 	Speed_booster.PushBack({ 465,0, 30,30 });
 	Speed_booster.speed = 0;
 
-	Lights_anim.PushBack({ 495,0,18,18 });
 	Lights_anim.PushBack({ 514,0,18,18 });
+	Lights_anim.PushBack({ 495,0,18,18 });
 	Lights_anim.speed = 0;
 	Lights_anim.loop = false;
 
@@ -146,7 +146,7 @@ bool ModuleSceneIntro::Start()
 	//Speedboosters
 	speedboosterleft = 195;
 	aux_obj = new PhysBody();
-	aux_obj = App->physics->CreateRectangleSensor(65, 750, 30, 84, speedboosterleft);
+	aux_obj = App->physics->CreateRectangleSensor(65, 750, 15, 75, speedboosterleft);
 	aux_obj->body_type = SPEED_BOOSTER;
 	aux_obj->anim = speedbooster;
 	aux_obj->listener = this;
@@ -154,7 +154,7 @@ bool ModuleSceneIntro::Start()
 
 	speedboosterright = -195;
 	aux_obj = new PhysBody();
-	aux_obj = App->physics->CreateRectangleSensor(530, 750, 30, 84, speedboosterright);
+	aux_obj = App->physics->CreateRectangleSensor(530, 750, 15, 75, speedboosterright);
 	aux_obj->body_type = SPEED_BOOSTER;
 	aux_obj->anim = speedbooster;
 	aux_obj->listener = this;
@@ -167,7 +167,7 @@ bool ModuleSceneIntro::Start()
 	aux_obj = new PhysBody();
 	aux_obj = App->physics->CreateRectangle(161, 925, 150, 10 , false, 73);
 	aux_obj->initial_rotation = 73;
-	aux_obj->body_type = BUMPER;
+	aux_obj->body_type = SQUARED_BUMPER;
 	aux_obj->anim = Squared_Bumper;
 	aux_obj->listener = this;
 	aux_obj->body->GetFixtureList()->SetRestitution(restitution);
@@ -176,7 +176,7 @@ bool ModuleSceneIntro::Start()
 	aux_obj = new PhysBody();
 	aux_obj = App->physics->CreateRectangle(438, 925, 150, 10, false,  108);
 	aux_obj->initial_rotation = 108;
-	aux_obj->body_type = BUMPER;
+	aux_obj->body_type = SQUARED_BUMPER;
 	aux_obj->anim = Squared_Bumper;
 	aux_obj->listener = this;
 	aux_obj->body->GetFixtureList()->SetRestitution(restitution);
@@ -283,6 +283,8 @@ bool ModuleSceneIntro::Start()
 	aux_obj->listener = this;
 	Lights.add(aux_obj);
 
+	lifes = 3;
+
 	return ret;
 }
 
@@ -291,6 +293,8 @@ update_status ModuleSceneIntro::PostUpdate()
 	if (sensed == true)
 	{
 		Reset();
+
+	
 		sensed = false;
 	}
 	return UPDATE_CONTINUE;
@@ -308,6 +312,13 @@ void ModuleSceneIntro::Reset() {
 	p2List_item<PhysBody*>* bumper;
 	for (bumper = Bumpers.getFirst(); bumper != nullptr; bumper = bumper->next) {
 		bumper->data->Reset();
+	}
+
+	lifes--;
+	if (lifes == 0)
+	{
+		puntuatuion = 0;
+		lifes = 3;
 	}
 }
 
@@ -386,12 +397,12 @@ update_status ModuleSceneIntro::Update()
 	iPoint leftspeed_pos;
 	SpeedBoosters.getFirst()->data->GetPosition(leftspeed_pos.x, leftspeed_pos.y);
 	SDL_Rect leftspeed_rect = SpeedBoosters.getFirst()->data->anim.GetCurrentFrame().rect;
-	App->renderer->Blit(Sprites, leftspeed_pos.x + leftspeed_rect.w / 2, leftspeed_pos.y + leftspeed_rect.h / 2, &leftspeed_rect,1,speedboosterleft);
+	App->renderer->Blit(Sprites, 50, 712, &leftspeed_rect,1,speedboosterleft);
 
 	iPoint rightspeed_pos;
 	SpeedBoosters.getLast()->data->GetPosition(rightspeed_pos.x, rightspeed_pos.y);
 	SDL_Rect rightspeed_rect = SpeedBoosters.getLast()->data->anim.GetCurrentFrame().rect;
-	App->renderer->Blit(Sprites, rightspeed_pos.x + rightspeed_rect.w / 2, rightspeed_pos.y + rightspeed_rect.h / 2, &rightspeed_rect, 1, speedboosterright,true);
+	App->renderer->Blit(Sprites, 515,712, &rightspeed_rect, 1, speedboosterright,true);
 
 	iPoint ball_pos;
 	Ball->GetPosition(ball_pos.x, ball_pos.y);
@@ -436,15 +447,22 @@ void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 		{
 			App->audio->PlayFx(bonus_fx);						
 			bodyB->anim.speed = 1;
+			puntuatuion += 200;
 		}
 		else if (bodyB->body_type == LIGHTS)
 		{
 			bodyB->anim.speed = 1;
 			App->audio->PlayFx(lights_fx);
+			puntuatuion += 20;
 		}
 		else if (bodyB->body_type == SPEED_BOOSTER)
 		{
 			bodyA->body->ApplyLinearImpulse({ speed_vec.x * 1.5f , speed_vec.y * 1.5f  }, { 0,0 }, false);
+			puntuatuion += 100;
+		}
+		else if (bodyB->body_type == SQUARED_BUMPER)
+		{
+			puntuatuion += 100;
 		}
 		else if (bodyB->body_type == END)
 		{
