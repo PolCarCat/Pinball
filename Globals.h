@@ -11,6 +11,8 @@ void log(const char file[], int line, const char* format, ...);
 #define DEGTORAD 0.0174532925199432957f
 #define RADTODEG 57.295779513082320876f
 
+#define MIN( a, b ) ( ((a) < (b)) ? (a) : (b) )
+#define MAX( a, b ) ( ((a) > (b)) ? (a) : (b) )
 #define CLAMP( value, min, max ) ( MAX( MIN( value, max ), min ) )
 #define REDUCE_TO( value, dest, step ) ( (value > dest) ? (value - dest < step) ? dest : value - step : (value < dest) ? (dest - value < step) ? dest : value + step : dest ) //Don't even ask about this
 
@@ -26,7 +28,7 @@ enum update_status
 
 // Configuration -----------
 #define SCREEN_WIDTH 649
-#define SCREEN_HEIGHT 1322
+#define SCREEN_HEIGHT 980
 #define SCREEN_SIZE 1
 #define WIN_FULLSCREEN false
 #define WIN_RESIZABLE false
